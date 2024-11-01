@@ -55,8 +55,8 @@ function showRestaurantInfo(placeName) {
 // 위치 설정 함수
 function setLocation() {
     const locationInput = document.getElementById('locationInput').value.trim();
-    // 입력된 위치가 없으면 '현재 위치'로 설정
-    getCoordinates(locationInput || '부산광역시', currentCategory); // 기본값을 부산광역시로 설정
+    // 입력된 위치가 없으면 '부산광역시'로 설정
+    getCoordinates(locationInput || '부산광역시', currentCategory);
 }
 
 // 뒤로가기 버튼 기능
