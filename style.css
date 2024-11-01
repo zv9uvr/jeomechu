@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'HSBomBaram';
-    src: url('jeomechu/HSBomBaram.ttf') format('truetype'); /* 실제 경로로 수정하세요 */
+    src: url('jeomechu/HSBombaram2.1.ttf') format('truetype'); /* 실제 경로로 수정하세요 */
 }
 
 body {
@@ -10,7 +10,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f8f9fa;
-    font-family: 'HSBomBaram', Arial, sans-serif; /* HS 봄바람체 적용 */
+    font-family: 'HSBombaram2.1', Arial, sans-serif; /* HS 봄바람체 적용 */
     flex-direction: column;
 }
 
