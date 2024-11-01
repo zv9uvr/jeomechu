@@ -23,51 +23,48 @@ h1 {
     margin-top: 20px;
 }
 
-.button {
-    font-size: 1em;
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px; /* 둥근 모서리 */
-    cursor: pointer;
-    color: white;
-    background-color: #6a5acd; /* 기본 색상 */
-    position: relative; /* 포지션 설정 */
-    overflow: hidden; /* 자식 요소가 부모를 넘지 않도록 설정 */
-    transition: transform 0.2s; /* 변환 효과 */
-}
+    .button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 10px; /* 둥근 모서리 */
+      cursor: pointer;
+      color: white;
+      background-color: #6a5acd; /* 기본 색상 */
+      position: relative; /* 포지션 설정 */
+      overflow: hidden; /* 자식 요소가 부모를 넘지 않도록 설정 */
+      transition: transform 0.2s, box-shadow 0.2s; /* 변환 효과 */
+      box-shadow: 0 5px #574b90; /* 입체감 추가 */
+    }
 
-.button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.2); /* 버튼 상단에 흰색 반투명 레이어 추가 */
-    transform: translateY(-20px); /* 위쪽으로 약간 이동 */
-    transition: transform 0.2s; /* 변환 효과 */
-    border-radius: 10px; /* 둥근 모서리 */
-}
+    /* 호버 시 배경색 살짝 밝게 */
+    .button:hover {
+      background-color: #7f68d0;
+    }
 
-.korean { background-color: #ff7f50; }
-.chinese { background-color: #ff6347; }
-.western { background-color: #6a5acd; }
-.japanese { background-color: #9370db; }
-.back { background-color: #4682b4; }
-.recommend { background-color: #32cd32; }
+    /* 버튼 클릭 시 눌리는 효과 */
+    .button:active {
+      transform: translateY(3px); /* 버튼이 눌리는 느낌 */
+      box-shadow: 0 2px #574b90; /* 그림자 크기 줄임 */
+    }
 
-.button:hover::before {
-    transform: translateY(0); /* 마우스 오버 시 레이어가 원래 위치로 돌아옴 */
-}
+    /* 빛나는 효과 */
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.2);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
 
-.button:hover {
-    transform: translateY(4px); /* 마우스 오버 시 버튼이 아래로 이동 */
-}
+    .button:hover::before {
+      opacity: 1; /* 호버 시 빛나는 효과가 더 강해짐 */
 
-.button:active {
-    transform: translateY(2px); /* 클릭 시 버튼이 살짝 더 아래로 이동 */
-}
 
 
 .results {
