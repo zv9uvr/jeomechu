@@ -36,7 +36,7 @@ h1 {
       overflow: hidden; /* 자식 요소가 부모를 넘지 않도록 설정 */
       transition: transform 0.2s, box-shadow 0.2s; /* 변환 효과 */
       box-shadow: 0 8px #574b90, /* 바깥쪽 그림자 */
-                  inset 0 0 10px rgba(0, 0, 0, 0.7); /* 내부 어두운 가장자리 */
+                  inset 0 0 20px rgba(0, 0, 0, 0.8); /* 내부 어두운 가장자리 */
     }
 
     /* 호버 시 배경색 살짝 밝게 */
@@ -47,7 +47,7 @@ h1 {
     /* 버튼 클릭 시 눌리는 효과 */
     .button:active {
       transform: translateY(4px); /* 버튼이 눌리는 느낌 */
-      box-shadow: 0 4px #574b90, inset 0 0 10px rgba(0, 0, 0, 0.7); /* 그림자 크기 줄임 */
+      box-shadow: 0 4px #574b90, inset 0 0 20px rgba(0, 0, 0, 0.8); /* 그림자 크기 줄임 */
     }
 
     /* 빛나는 효과 */
