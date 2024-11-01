@@ -5,25 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_ACTUAL_APP_KEY&libraries=services,places" async defer></script>
-    <style>
-        /* CSS 스타일 */
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- HTML 내용 -->
+    <div id="menuScreen" class="container">
+        <h1>저녁 메뉴 추천</h1>
+        <div class="button-container">
+            <button class="button korean" onclick="showRestaurantScreen('한식')">한식</button>
+            <button class="button chinese" onclick="showRestaurantScreen('중식')">중식</button>
+            <button class="button western" onclick="showRestaurantScreen('양식')">양식</button>
+            <button class="button japanese" onclick="showRestaurantScreen('일식')">일식</button>
+        </div>
+        <input type="text" id="locationInput" placeholder="지역을 입력해주세요! 입력하지 않으면 user의 현재 위치로 설정됩니다 ;)" />
+        <button class="button" onclick="setLocation()">위치 설정</button>
+    </div>
 
-    <script>
-        let map;
-        let markers = [];
+    <div id="restaurantScreen" class="container hidden">
+        <div id="results" class="results"></div>
+        <div id="map" class="map"></div>
+        <div class="button-container">
+            <button class="button back" onclick="goBack()">🔙 뒤로가기</button>
+            <button class="button recommend" onclick="getNewRecommendations()">🔄 재추천</button>
+        </div>
+    </div>
 
-        function findRestaurants(category) {
-            // 검색 기능 구현
-        }
+    <div id="infoScreen" class="container hidden">
+        <div id="info" class="info"></div>
+        <div id="infoMap" class="info-map"></div>
+    </div>
 
-        window.onload = function() {
-            // 페이지가 로드된 후에 호출
-            // findRestaurants('한식'); // 예시: 한식 음식점 검색
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
