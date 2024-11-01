@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet"> <!-- Do Hyeon 추가 -->
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Batang&display=swap" rel="stylesheet"> <!-- 폰트 추가 -->
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
 </head>
 <body>
     <div id="menuScreen" class="container">
-        <h1 style="font-weight: bold; font-size: 100pt;">저녁 메뉴 추천</h1>
+        <h1>저녁 메뉴 추천</h1>
         <div class="button-container">
             <button class="button korean" onclick="showRestaurantScreen('한식')">한식</button>
             <button class="button chinese" onclick="showRestaurantScreen('중식')">중식</button>
@@ -22,6 +22,7 @@
     </div>
 
     <div id="restaurantScreen" class="container hidden">
+        <h1>추천 음식점</h1>
         <div id="results" class="results"></div>
         <div id="map" class="map"></div>
         <div class="nav-buttons">
