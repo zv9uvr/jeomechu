@@ -4,28 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services,places"></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services,places" async defer></script>
+    <style>
+        /* CSS 스타일 */
+    </style>
 </head>
 <body>
-    <div id="menuScreen" class="container">
-        <h1>저녁 메뉴 추천</h1>
-        <div class="button-container">
-            <button class="button korean" onclick="findRestaurants('한식')">한식</button>
-            <button class="button chinese" onclick="findRestaurants('중식')">중식</button>
-            <button class="button western" onclick="findRestaurants('양식')">양식</button>
-            <button class="button japanese" onclick="findRestaurants('일식')">일식</button>
-        </div>
-        <input id="locationInput" class="location-input" type="text" placeholder="지역을 입력해주세요! 입력하지 않으면 현재 위치로 설정됩니다 ;)" />
-    </div>
+    <!-- HTML 내용 -->
 
-    <div id="restaurantScreen" class="container hidden">
-        <h1>추천 음식점</h1>
-        <div id="results">음식점을 검색 중입니다...</div>
-        <div id="map"></div>
-    </div>
+    <script>
+        let map;
+        let markers = [];
 
-    <script src="script.js"></script>
-    <script src="mapService.js"></script>
+        function findRestaurants(category) {
+            // 검색 기능 구현
+        }
+
+        window.onload = function() {
+            // 페이지가 로드된 후에 호출
+            // findRestaurants('한식'); // 예시: 한식 음식점 검색
+        };
+    </script>
 </body>
 </html>
