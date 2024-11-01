@@ -51,20 +51,14 @@ h1 {
     color: #333;
 }
 
-#map {
-    width: 100%; /* 지도의 넓이를 조정하세요 */
-    height: 400px; /* 필요한 경우 높이를 조정하세요 */
-    margin-top: 20px;
+.map {
+    width: 80%;
+    height: 400px;
+    margin: 20px auto;
 }
 
 .hidden {
     display: none;
-}
-
-.nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
 }
 
 .info {
@@ -73,7 +67,7 @@ h1 {
 }
 
 .info-map {
-    width: 400px; /* 정보 화면에서의 맵 크기 조정 */
+    width: 400px;
     height: 400px;
 }
 
