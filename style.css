@@ -14,32 +14,32 @@ body {
     margin-bottom: 20px;
 }
 
+/* 제목에 Do Hyeon 폰트 적용 */
 h1 {
-    font-size: 2em;
+    font-family: 'Do Hyeon', sans-serif;
+    font-weight: bold;
+    font-size: 100pt;
     color: #333;
 }
 
-.button-container {
-    margin-top: 20px;
+/* 본문과 버튼에 Gowun Batang 폰트 적용 */
+body, input, button {
+    font-family: 'Gowun Batang', serif;
 }
 
+/* 버튼 스타일 */
 .button {
     font-size: 1em;
     padding: 10px 20px;
     margin: 5px;
     border: none;
-    border-radius: 10px; /* 둥근 모서리 */
+    border-radius: 10px;
     cursor: pointer;
     color: white;
-    background-color: #6a5acd; /* 기본 색상 */
-    position: relative; /* 포지션 설정 */
-    overflow: hidden; /* 자식 요소가 부모를 넘지 않도록 설정 */
-    transition: transform 0.2s, box-shadow 0.2s; /* 변환 효과 */
-    box-shadow: 0 8px #574b90, /* 바깥쪽 그림자 */
-                inset 0 0 20px rgba(0, 0, 0, 0.8); /* 내부 어두운 가장자리 */
+    background-color: #6a5acd;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* 호버 시 배경색 살짝 밝게 */
 .button:hover {
     background-color: #7f68d0;
 }
