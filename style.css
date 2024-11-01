@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'HSBomBaram';
-    src: url('fonts/HSBomBaram.ttf') format('truetype'); /* 실제 경로로 수정하세요 */
+    src: url('jeomechu/HSBomBaram.ttf') format('truetype'); /* 실제 경로로 수정하세요 */
 }
 
 body {
@@ -20,9 +20,9 @@ body {
 }
 
 h1 {
-    font-size: 200pt; /* 글씨 크기 조정 */
+    font-size: 100pt; /* 글씨 크기 조정 */
     font-weight: bold; /* 글씨 두께 조정 */
-    color: #333;
+    color: #000;
 }
 
 .button-container {
