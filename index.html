@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services" defer></script>
+    <script src="mapService.js" defer></script>
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="menuScreen" class="container">
@@ -23,7 +25,7 @@
     <div id="restaurantScreen" class="container hidden">
         <h1>추천 음식점</h1>
         <div id="results" class="results"></div>
-        <div id="map"></div>
+        <div id="map" class="map"></div>
         <div class="nav-buttons">
             <button class="back" onclick="goBack()">뒤로가기</button>
             <button class="recommend" onclick="getNewRecommendations()">재추천</button>
@@ -33,12 +35,6 @@
     <div id="infoScreen" class="container hidden">
         <div id="info" class="info"></div>
         <div id="mapInfo" class="info-map"></div>
-        <div class="nav-buttons">
-            <button class="back" onclick="goToFirstScreen()">첫 번째 화면으로 돌아가기</button>
-            <button class="back" onclick="goToSecondScreen()">두 번째 화면으로 돌아가기</button>
-        </div>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
