@@ -28,10 +28,12 @@ h1 {
     padding: 10px 20px;
     margin: 5px;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px; /* 더 둥글게 */
     cursor: pointer;
     color: white;
-    transition: background-color 0.3s ease;
+    background-color: #6a5acd; /* 기본 색상 */
+    transition: all 0.3s ease; /* 모든 속성에 부드러운 전환 적용 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 입체감 추가 */
 }
 
 .korean { background-color: #ff7f50; }
@@ -42,7 +44,9 @@ h1 {
 .recommend { background-color: #32cd32; }
 
 .button:hover {
-    opacity: 0.9;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 마우스 오버 시 그림자 효과 강화 */
+    transform: translateY(-2px); /* 마우스 오버 시 약간 위로 이동 */
+    opacity: 0.9; /* 투명도 조정 */
 }
 
 .results {
