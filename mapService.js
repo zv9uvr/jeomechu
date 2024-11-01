@@ -1,16 +1,32 @@
+window.onload = function() {
+    // 초기 위치 설정
+    setLocation(); // 페이지 로드 시 기본 위치 설정
+};
+
 let markers = [];
 let currentCategory;
 let map; // 전역 변수로 map 선언
 
+function setLocation() {
+    const locationInput = document.getElementById('locationInput').value.trim();
+    // 기본값으로 '성남시' 사용
+    getCoordinates(locationInput || '성남시', currentCategory); 
+}
+
 // 주소를 사용하여 좌표를 가져오는 함수
 function getCoordinates(address, category) {
-    new kakao.maps.services.Geocoder().addressSearch(address, (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-            displayMap(new kakao.maps.LatLng(result[0].y, result[0].x), category);
-        } else {
-            document.getElementById('results').innerHTML = '해당 지역을 찾을 수 없습니다.';
-        }
-    });
+    // kakao 객체가 정의되었는지 확인
+    if (typeof kakao !== 'undefined') {
+        new kakao.maps.services.Geocoder().addressSearch(address, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+                displayMap(new kakao.maps.LatLng(result[0].y, result[0].x), category);
+            } else {
+                document.getElementById('results').innerHTML = '해당 지역을 찾을 수 없습니다.';
+            }
+        });
+    } else {
+        console.error("kakao 객체가 정의되지 않았습니다."); // 에러 메시지 출력
+    }
 }
 
 // 주어진 좌표에 지도를 표시하는 함수
@@ -54,12 +70,6 @@ function showRestaurantInfo(placeName) {
     document.getElementById('infoScreen').classList.remove('hidden');
     const infoDiv = document.getElementById('info');
     infoDiv.innerHTML = `<h2>${placeName}</h2><p>여기에 음식점에 대한 설명이 들어갑니다.</p>`;
-}
-
-// 위치 설정 함수
-function setLocation() {
-    const locationInput = document.getElementById('locationInput').value.trim();
-    getCoordinates(locationInput || '부산광역시', currentCategory); // 기본값을 부산광역시로 설정
 }
 
 // 뒤로가기 버튼 기능
