@@ -8,13 +8,65 @@ body {
     font-family: Arial, sans-serif;
     flex-direction: column;
 }
-.container { text-align: center; }
-h1 { font-size: 2em; color: #333; }
-.button { font-size: 1em; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; color: white; transition: background-color 0.3s ease; }
-.korean { background-color: #ff7f50; } .chinese { background-color: #ff6347; } .western { background-color: #6a5acd; } .japanese { background-color: #9370db; }
-.button:hover { opacity: 0.9; }
-.location-input { margin-top: 20px; padding: 8px; width: 80%; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1em; }
-.location-input::placeholder { color: #999; font-size: 0.9em; }
-#results { margin-top: 20px; font-size: 1.2em; color: #333; }
-#map { width: 100%; height: 300px; margin-top: 20px; }
-.hidden { display: none; }
+
+.container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    color: #333;
+}
+
+.button-container {
+    margin-top: 20px;
+}
+
+.button {
+    font-size: 1em;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.korean { background-color: #ff7f50; }
+.chinese { background-color: #ff6347; }
+.western { background-color: #6a5acd; }
+.japanese { background-color: #9370db; }
+.back { background-color: #4682b4; }
+.recommend { background-color: #32cd32; }
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.results {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.map {
+    width: 80%; /* 맵 너비 조정 */
+    height: 400px; /* 맵 높이 조정 */
+    margin: 20px auto;
+}
+
+.hidden {
+    display: none;
+}
+
+.info {
+    text-align: left;
+    margin: 20px;
+}
+
+.info-map {
+    width: 400px; /* 정보 화면에서의 맵 크기 조정 */
+    height: 400px;
+}
