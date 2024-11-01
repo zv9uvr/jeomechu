@@ -46,7 +46,7 @@ function searchPlaces(location, category) {
         clearMarkers(); // 이전 마커 제거
 
         if (status === kakao.maps.services.Status.OK) {
-            resultDiv.innerHTML = '<strong>추천 음식점:</strong><br>' + data.slice(0, 5).map(place => {
+            resultDiv.innerHTML = data.slice(0, 5).map(place => {
                 const placeLocation = new kakao.maps.LatLng(place.y, place.x);
                 markers.push(new kakao.maps.Marker({ position: placeLocation, map }));
 
