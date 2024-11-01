@@ -4,8 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_ACTUAL_APP_KEY&libraries=services,places" async defer></script>
-    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            flex-direction: column;
+        }
+        .container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .button {
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .korean { background-color: #ff7f50; }
+        .chinese { background-color: #ff6347; }
+        .western { background-color: #6a5acd; }
+        .japanese { background-color: #9370db; }
+        .button:hover {
+            opacity: 0.9;
+        }
+        .results {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        #map {
+            width: 100%; /* 지도의 넓이를 조정하세요 */
+            height: 400px; /* 필요한 경우 높이를 조정하세요 */
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div id="menuScreen" class="container">
@@ -17,23 +74,27 @@
             <button class="button japanese" onclick="showRestaurantScreen('일식')">일식</button>
         </div>
         <input type="text" id="locationInput" placeholder="지역을 입력해주세요! 입력하지 않으면 user의 현재 위치로 설정됩니다 ;)" />
-        <button class="button" onclick="setLocation()">위치 설정</button>
+        <button onclick="setLocation()">위치 설정</button>
     </div>
 
     <div id="restaurantScreen" class="container hidden">
+        <h1>추천 음식점</h1>
         <div id="results" class="results"></div>
-        <div id="map" class="map"></div>
-        <div class="button-container">
-            <button class="button back" onclick="goBack()">🔙 뒤로가기</button>
-            <button class="button recommend" onclick="getNewRecommendations()">🔄 재추천</button>
+        <div id="map"></div>
+        <div class="nav-buttons">
+            <button onclick="goBack()">뒤로가기</button>
+            <button onclick="getNewRecommendations()">재추천</button>
         </div>
     </div>
 
     <div id="infoScreen" class="container hidden">
-        <div id="info" class="info"></div>
-        <div id="infoMap" class="info-map"></div>
+        <div id="info"></div>
+        <div id="mapInfo"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // JavaScript 코드를 여기에 추가하세요.
+        // getCoordinates, displayMap, searchPlaces, clearMarkers 등의 함수 포함
+    </script>
 </body>
 </html>
