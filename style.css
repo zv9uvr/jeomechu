@@ -51,14 +51,20 @@ h1 {
     color: #333;
 }
 
-.map {
-    width: 80%;
-    height: 400px;
-    margin: 20px auto;
+#map {
+    width: 100%; /* 지도의 넓이를 조정하세요 */
+    height: 400px; /* 필요한 경우 높이를 조정하세요 */
+    margin-top: 20px;
 }
 
 .hidden {
     display: none;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 .info {
@@ -67,7 +73,7 @@ h1 {
 }
 
 .info-map {
-    width: 400px;
+    width: 400px; /* 정보 화면에서의 맵 크기 조정 */
     height: 400px;
 }
 
@@ -79,18 +85,3 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
-.back {
-    background-color: #4682b4; /* 원하는 색상으로 설정 */
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.back:hover {
-    opacity: 0.9; /* 호버 시 효과 */
-}
-
