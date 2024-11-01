@@ -32,8 +32,8 @@ function searchPlaces(location, category) {
             resultDiv.innerHTML = '<strong>추천 음식점:</strong><br>' + data.slice(0, 5).map(place => {
                 const placeLocation = new kakao.maps.LatLng(place.y, place.x);
                 markers.push(new kakao.maps.Marker({ position: placeLocation, map }));
-                
-                return `<button class="restaurant-button" onclick="showRestaurantInfo('${place.place_name}')">${place.place_name}</button>`;
+
+                return `<button class="restaurant-button" onclick="showRestaurantInfo('${place.place_name}', '${place.place_url}')">${place.place_name}</button>`;
             }).join('');
         } else {
             resultDiv.innerHTML = '결과를 찾을 수 없습니다.';
@@ -48,22 +48,30 @@ function clearMarkers() {
 }
 
 // 음식점 정보 표시 함수 (버튼 클릭 시 호출)
-function showRestaurantInfo(placeName) {
+function showRestaurantInfo(placeName, placeUrl) {
     // 세 번째 화면으로 이동하고 음식점 정보를 표시하는 로직
     document.getElementById('restaurantScreen').classList.add('hidden');
     document.getElementById('infoScreen').classList.remove('hidden');
     const infoDiv = document.getElementById('info');
-    infoDiv.innerHTML = `<h2>${placeName}</h2><p>여기에 음식점에 대한 설명이 들어갑니다.</p>`;
+    
+    // 가게 이름과 설명을 여기에 추가할 수 있습니다.
+    infoDiv.innerHTML = `<h2>${placeName}</h2>
+                         <p>여기에 음식점에 대한 설명이 들어갑니다.</p>
+                         <p><a href="${placeUrl}" target="_blank">자세히 보기</a></p>`;
     // 추가적인 정보를 여기에 작성할 수 있습니다.
 }
 
 // 뒤로가기 버튼 기능
 function goBack() {
-    document.getElementById('restaurantScreen').classList.add('hidden');
-    document.getElementById('menuScreen').classList.remove('hidden');
+    document.getElementById('infoScreen').classList.add('hidden');
+    document.getElementById('restaurantScreen').classList.remove('hidden');
 }
 
 // 새로운 음식점 추천 함수
 function getNewRecommendations() {
     // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직
+    // 예: 이전에 추천한 음식점 목록을 참조하여 새로운 추천을 생성
+    const previousRecommendations = [...document.querySelectorAll('.restaurant-button')].map(button => button.innerText);
+    const category = document.querySelector('.button-container button.active').innerText; // Assume active category
+    // 새로운 추천 로직 구현...
 }
