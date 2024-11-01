@@ -5,11 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
     <link rel="stylesheet" href="style.css">
+    <link href="path/to/HSBomBaram.ttf" rel="stylesheet" /> <!-- 폰트 파일 경로 설정 -->
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
+    <style>
+        @font-face {
+            font-family: 'HSBomBaram'; /* HS 봄바람체 이름 */
+            src: url('path/to/HSBomBaram.ttf') format('truetype'); /* 폰트 파일 경로 */
+        }
+
+        .main-title {
+            font-weight: bold; /* 볼드체 설정 */
+            font-size: 200pt; /* 글자 크기 설정 */
+            font-family: 'HSBomBaram', sans-serif; /* HS 봄바람체 설정 */
+            color: #008080; /* 시퍼리 색상 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+        }
+
+        /* 기존 CSS 코드 추가 가능 */
+    </style>
 </head>
 <body>
     <div id="menuScreen" class="container">
-        <h1 style="font-weight: bold; font-size: 100pt;">저녁 메뉴 추천</h1>
+        <h1 class="main-title">저녁 메뉴 추천</h1> <!-- 수정된 부분 -->
         <div class="button-container">
             <button class="button korean" onclick="showRestaurantScreen('한식')">한식</button>
             <button class="button chinese" onclick="showRestaurantScreen('중식')">중식</button>
