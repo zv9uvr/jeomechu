@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>저녁 메뉴 추천</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    .container {
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .button-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+    .button.korean { background-color: #FF7F50; }
+    .button.chinese { background-color: #FF6347; }
+    .button.western { background-color: #4682B4; }
+    .button.japanese { background-color: #6A5ACD; }
+    .button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>저녁 메뉴 추천</h1>
+    <div class="button-row">
+      <button class="button korean" onclick="navigateToCategory('korean')">한식</button>
+      <button class="button chinese" onclick="navigateToCategory('chinese')">중식</button>
+      <button class="button western" onclick="navigateToCategory('western')">양식</button>
+      <button class="button japanese" onclick="navigateToCategory('japanese')">일식</button>
+    </div>
+  </div>
+
+  <script>
+    const restaurants = {
+      korean: ["김밥천국", "한솥도시락", "철판정", "한식당", "감자탕집", "비빔밥집", "삼겹살집", "전주비빔밥", "순두부집", "갈비찜"],
+      chinese: ["홍콩반점", "중화루", "천하루", "짜장짬뽕", "탕수육명가", "중식당", "북경오리집", "만두명가", "마라탕집", "사천식당"],
+      western: ["빕스", "아웃백", "블루보틀", "파스타하우스", "스테이크하우스", "피자명가", "버거집", "샌드위치카페", "스페인식당", "프렌치레스토랑"],
+      japanese: ["스시로", "오토코돈부리", "사누키우동", "라멘하우스", "스시야", "텐동", "돈카츠집", "이자카야", "오코노미야키", "일본식카레"]
+    };
+
+    function navigateToCategory(category) {
+      const selectedRestaurants = getRandomRestaurants(restaurants[category], 3);
+      const url = `category.html?category=${category}&restaurants=${selectedRestaurants.join(",")}`;
+      window.location.href = url;
+    }
+
+    function getRandomRestaurants(array, num) {
+      const shuffled = array.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
+    }
+  </script>
+</body>
+</html>

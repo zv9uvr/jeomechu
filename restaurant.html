@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>식당 메뉴 추천</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      position: relative;
+    }
+    .container {
+      text-align: center;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .menu-item {
+      padding: 10px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      background-color: #FFD700;
+      color: #333;
+    }
+    .back-button, .reshuffle-button {
+      position: absolute;
+      padding: 10px 15px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+    }
+    .back-button {
+      bottom: 20px;
+      left: 20px;
+      background-color: #FF6347;
+    }
+    .reshuffle-button {
+      bottom: 20px;
+      right: 20px;
+      background-color: #4682B4;
+    }
+    .back-button:hover, .reshuffle-button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="restaurantTitle"></h1>
+    <div class="menu-list" id="menuList"></div>
+  </div>
+  
+  <button class="back-button" onclick="goBack()">뒤로가기</button>
+  <button class="reshuffle-button" onclick="reshuffleMenus()">재추천</button>
+
+  <script>
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        restaurant: params.get('restaurant')
+      };
+    }
+
+    const { restaurant } = getQueryParams();
+    document.getElementById('restaurantTitle').textContent = `${restaurant} 추천 메뉴입니다`;
+
+    const menus = {
+      "김밥천국": ["김밥", "라면", "떡볶이", "우동", "덮밥"],
+      "한솥도시락": ["불고기 도시락", "치킨 도시락", "돈가스 도시락", "카레 도시락", "제육 도시락"],
+      "철판정": ["철판 볶음밥", "철판 스테이크", "치킨 철판", "해물 철판", "소시지 철판"],
+      "홍콩반점": ["짜장면", "짬뽕", "탕수육", "군만두", "볶음밥"],
+      "빕스": ["스테이크", "파스타", "샐러드 바", "스프", "피자"],
+      "스시로": ["초밥 세트", "회 덮밥", "연어 초밥", "참치 초밥", "장어 초밥"]
+    };
+
+    function displayMenus(menuItems) {
+      const menuList = document.getElementById('menuList');
+      menuList.innerHTML = ''; // 초기화
+
+      menuItems.forEach(menu => {
+        const item = document.createElement('div');
+        item.textContent = menu;
+        item.classList.add('menu-item');
+        menuList.appendChild(item);
+      });
+    }
+
+    function getRandomMenus(restaurantMenus, num) {
+      const shuffled = restaurantMenus.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, num);
+    }
+
+    function reshuffleMenus() {
+      const selectedMenus = menus[restaurant] ? getRandomMenus(menus[restaurant], 2) : [];
+      displayMenus(selectedMenus);
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    // 초기 메뉴 표시
+    reshuffleMenus();
+  </script>
+</body>
+</html>
