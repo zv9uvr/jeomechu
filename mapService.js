@@ -17,12 +17,15 @@ function getCoordinates(address, category) {
 function displayMap(location, category) {
     if (!map) {
         map = new kakao.maps.Map(document.getElementById('map'), { center: location, level: 4 });
+    } else {
+        map.setCenter(location); // 이미 맵이 있는 경우, 위치를 업데이트
     }
     searchPlaces(location, category);
 }
 
 // 특정 카테고리의 장소를 검색하고 결과를 표시하는 함수
 function searchPlaces(location, category) {
+    clearMarkers(); // 기존 마커 제거
     new kakao.maps.services.Places().keywordSearch(category, (data, status) => {
         const resultDiv = document.getElementById('results');
         if (status === kakao.maps.services.Status.OK) {
@@ -63,4 +66,11 @@ function setLocation() {
 function goBack() {
     document.getElementById('restaurantScreen').classList.add('hidden');
     document.getElementById('menuScreen').classList.remove('hidden');
+}
+
+// 새로운 추천 음식점 가져오기
+function getNewRecommendations() {
+    // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직 (임시로 동일한 카테고리로 재검색)
+    const currentLocation = map.getCenter(); // 현재 맵의 중앙 위치
+    searchPlaces(currentLocation, currentCategory); // 현재 위치로 새 음식점 검색
 }
