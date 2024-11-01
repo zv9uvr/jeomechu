@@ -79,3 +79,18 @@ input[type="text"] {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+.back {
+    background-color: #4682b4; /* 원하는 색상으로 설정 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back:hover {
+    opacity: 0.9; /* 호버 시 효과 */
+}
+
