@@ -27,12 +27,19 @@ function searchPlaces(location, category) {
     new kakao.maps.services.Places().keywordSearch(category, (data, status) => {
         const resultDiv = document.getElementById('results');
         if (status === kakao.maps.services.Status.OK) {
-            resultDiv.innerHTML = data.slice(0, 5).map(place => {
+            resultDiv.innerHTML = ''; // 기존 내용을 초기화
+
+            data.slice(0, 5).forEach(place => {
                 const placeLocation = new kakao.maps.LatLng(place.y, place.x);
                 markers.push(new kakao.maps.Marker({ position: placeLocation, map }));
 
-                return `<button class="restaurant-button" onclick="showRestaurantInfo('${place.place_name}')">${place.place_name}</button>`;
-            }).join('');
+                const button = document.createElement('button');
+                button.className = 'restaurant-button';
+                button.textContent = place.place_name;
+                button.onclick = () => showRestaurantInfo(place.place_name); // 이벤트 핸들러 추가
+
+                resultDiv.appendChild(button); // 버튼을 results div에 추가
+            });
         } else {
             resultDiv.innerHTML = '결과를 찾을 수 없습니다.';
         }
