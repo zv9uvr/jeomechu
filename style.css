@@ -5,7 +5,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
+    font-family: 'Do Hyeon', sans-serif; /* Do Hyeon 글꼴로 설정 */
     flex-direction: column;
 }
 
@@ -15,10 +15,9 @@ body {
 }
 
 h1 {
-    font-family: 'Do Hyeon', sans-serif; /* Do Hyeon 폰트 적용 */
-    font-size: 2em; /* 원하는 크기로 조정 */
-    color: #333; /* 원하는 색상으로 조정 */
-    letter-spacing: -20px; /* 원하는 간격으로 조정 */
+    font-size: 2em;
+    color: #333;
+    letter-spacing: -1px; /* 자간 조정 */
 }
 
 .button-container {
