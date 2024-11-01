@@ -5,7 +5,7 @@ body {
     height: 100vh;
     margin: 0;
     background-color: #f8f9fa;
-    font-family: 'Do Hyeon', sans-serif; /* Do Hyeon 글꼴로 설정 */
+    font-family: 'Do Hyeon', sans-serif !important;
     flex-direction: column;
 }
 
