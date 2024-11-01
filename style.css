@@ -1,0 +1,20 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+}
+.container { text-align: center; }
+h1 { font-size: 2em; color: #333; }
+.button { font-size: 1em; padding: 10px 20px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; color: white; transition: background-color 0.3s ease; }
+.korean { background-color: #ff7f50; } .chinese { background-color: #ff6347; } .western { background-color: #6a5acd; } .japanese { background-color: #9370db; }
+.button:hover { opacity: 0.9; }
+.location-input { margin-top: 20px; padding: 8px; width: 80%; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1em; }
+.location-input::placeholder { color: #999; font-size: 0.9em; }
+#results { margin-top: 20px; font-size: 1.2em; color: #333; }
+#map { width: 100%; height: 300px; margin-top: 20px; }
+.hidden { display: none; }

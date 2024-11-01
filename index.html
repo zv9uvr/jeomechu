@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>저녁 메뉴 추천</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services,places"></script>
+</head>
+<body>
+    <div id="menuScreen" class="container">
+        <h1>저녁 메뉴 추천</h1>
+        <div class="button-container">
+            <button class="button korean" onclick="findRestaurants('한식')">한식</button>
+            <button class="button chinese" onclick="findRestaurants('중식')">중식</button>
+            <button class="button western" onclick="findRestaurants('양식')">양식</button>
+            <button class="button japanese" onclick="findRestaurants('일식')">일식</button>
+        </div>
+        <input id="locationInput" class="location-input" type="text" placeholder="지역을 입력해주세요! 입력하지 않으면 현재 위치로 설정됩니다 ;)" />
+    </div>
+
+    <div id="restaurantScreen" class="container hidden">
+        <h1>추천 음식점</h1>
+        <div id="results">음식점을 검색 중입니다...</div>
+        <div id="map"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="mapService.js"></script>
+</body>
+</html>
