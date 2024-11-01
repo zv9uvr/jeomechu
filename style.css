@@ -37,11 +37,11 @@ body, input, button {
     cursor: pointer;
     color: white;
     background-color: #6a5acd;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: background-color 0.3s;
 }
 
 .button:hover {
-    background-color: #7f68d0;
+    background-color: #7f68d0; /* Hover 색상 */
 }
 
 /* 버튼 클릭 시 눌리는 효과 */
