@@ -4,7 +4,8 @@ let map; // map 변수를 전역으로 선언
 
 // 주소를 사용하여 좌표를 가져오는 함수
 function getCoordinates(address, category) {
-    new kakao.maps.services.Geocoder().addressSearch(address, (result, status) => {
+    const geocoder = new kakao.maps.services.Geocoder(); // Geocoder 인스턴스 생성
+    geocoder.addressSearch(address, (result, status) => {
         if (status === kakao.maps.services.Status.OK) {
             displayMap(new kakao.maps.LatLng(result[0].y, result[0].x), category);
         } else {
@@ -26,7 +27,8 @@ function displayMap(location, category) {
 // 특정 카테고리의 장소를 검색하고 결과를 표시하는 함수
 function searchPlaces(location, category) {
     clearMarkers(); // 기존 마커 제거
-    new kakao.maps.services.Places().keywordSearch(category, (data, status) => {
+    const placesService = new kakao.maps.services.Places(); // Places 인스턴스 생성
+    placesService.keywordSearch(category, (data, status) => {
         const resultDiv = document.getElementById('results');
         if (status === kakao.maps.services.Status.OK) {
             resultDiv.innerHTML = '<strong>추천 음식점:</strong><br>' + data.slice(0, 5).map(place => {
