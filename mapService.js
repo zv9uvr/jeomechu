@@ -1,3 +1,4 @@
+
 let markers = [];
 let currentCategory;
 
@@ -10,8 +11,34 @@ function showRestaurantScreen(category) {
 
 function setLocation() {
     const locationInput = document.getElementById('locationInput').value.trim();
-    getCoordinates(locationInput || '성남시', currentCategory);
+    
+    // 현재 위치를 가져오는 함수
+    function getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                getCoordinates(latitude + ',' + longitude, currentCategory);
+            }, () => {
+                console.error("현재 위치를 가져올 수 없습니다.");
+                // 위치를 가져오지 못할 경우 기본값으로 '성남시' 사용
+                getCoordinates('성남시', currentCategory);
+            });
+        } else {
+            console.error("Geolocation API를 지원하지 않는 브라우저입니다.");
+            // Geolocation API를 지원하지 않을 경우 기본값으로 '성남시' 사용
+            getCoordinates('성남시', currentCategory);
+        }
+    }
+
+    // 입력된 주소가 있을 경우, 해당 주소로 위치 검색
+    if (locationInput) {
+        getCoordinates(locationInput, currentCategory);
+    } else {
+        getCurrentLocation(); // 위치를 가져오지 못하면 현재 위치 사용
+    }
 }
+
+
 
 function getCoordinates(address, category) {
     if (typeof kakao !== 'undefined') {
@@ -28,7 +55,7 @@ function getCoordinates(address, category) {
 }
 
 function displayMap(location, category) {
-    if (!map) {
+    if (!map) {s
         map = new kakao.maps.Map(document.getElementById('map'), { center: location, level: 4 });
     } else {
         map.setCenter(location);
