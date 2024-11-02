@@ -74,30 +74,34 @@
             margin-bottom: 20px;
         }
 
-        .input-group input {
-            padding: 10px;
-            width: 300px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 10px 0 0 10px;
-            height: 40px; /* 높이 추가 */
-        }
+       .input-group input {
+    padding: 10px;
+    width: 300px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 10px 0 0 10px;
+    box-sizing: border-box;
+    height: 40px; /* 높이 추가 */
+}
 
-        .location-button {
-            padding: 0 15px; /* 위아래 패딩 제거 */
-            height: 40px; /* 높이를 입력창에 맞춤 */
-            background: #F15F5F;
-            color: white;
-            border: none;
-            border-radius: 0 10px 10px 0;
-            cursor: pointer;
-            font-size: 1em;
-            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.location-button {
+    padding: 0;
+    width: 40px; /* 버튼의 너비를 높이에 맞추어 설정 */
+    height: 40px; /* 높이를 입력창과 동일하게 설정 */
+    background: #F15F5F;
+    color: white;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+    font-size: 1em;
+    box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
 
         .location-button:before {
             content: '🔍';
