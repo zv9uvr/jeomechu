@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천1</title>
+    <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         /* 전체 스타일 */
@@ -258,7 +258,7 @@
 
         function displayRandomRestaurants() {
             const restaurantList = document.getElementById('restaurant-list');
-            restaurantList.innerHTML = '';
+            restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
             document.getElementById('warning-message').style.display = 'none';
 
             const randomRestaurants = allRestaurants.sort(() => 0.5 - Math.random()).slice(0, 3);
