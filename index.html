@@ -3,41 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천</title>
-    <link rel="stylesheet" href="style.css?v=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Batang&display=swap" rel="stylesheet">
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
-    <script src="mapService.js?v=1.0" defer></script>
-    <script src="script.js?v=1.0" defer></script>
+    <title>가천대역 근처 음식점 추천</title>
+    <style>
+        /* 공통 스타일 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            height: 100vh;
+            position: relative;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 { font-size: 2em; color: #333; margin-bottom: 20px; }
+        .button { padding: 10px 20px; font-size: 1.2em; border: none; border-radius: 5px; cursor: pointer; color: white; }
+        .korean { background-color: #FF7F50; }
+        .chinese { background-color: #FF6347; }
+        .western { background-color: #4682B4; }
+        .japanese { background-color: #6A5ACD; }
+        .button:hover { opacity: 0.9; }
+        #mapContainer { width: 100%; height: 500px; display: none; }
+        #storeInfo { margin-top: 10px; }
+    </style>
 </head>
-
 <body>
-    <div id="menuScreen" class="container">
-        <h1>저녁 메뉴 추천</h1>
-        <div class="button-container">
-            <button class="button korean" onclick="showRestaurantScreen('한식')">한식</button>
-            <button class="button chinese" onclick="showRestaurantScreen('중식')">중식</button>
-            <button class="button western" onclick="showRestaurantScreen('양식')">양식</button>
-            <button class="button japanese" onclick="showRestaurantScreen('일식')">일식</button>
-        </div>
-        <input type="text" id="locationInput" placeholder="지역을 입력해주세요! 입력하지 않으면 성남시청을 중심으로 설정됩니다 :)" />
-        <button onclick="setLocation()">위치 설정</button>
-    </div>
-
-    <div id="restaurantScreen" class="container hidden">
-        <h1>추천 음식점</h1>
-        <div id="results" class="results"></div>
-        <div id="map" class="map"></div>
-        <div class="nav-buttons">
-            <button class="back" onclick="goBack()">뒤로가기</button>
-            <button class="recommend" onclick="getNewRecommendations()">재추천</button>
+    <div class="container" id="mainPage">
+        <h1>가천대역 근처 저녁 메뉴 추천</h1>
+        <div>
+            <button class="button korean" onclick="navigateToCategory('korean')">한식</button>
+            <button class="button chinese" onclick="navigateToCategory('chinese')">중식</button>
+            <button class="button western" onclick="navigateToCategory('western')">양식</button>
+            <button class="button japanese" onclick="navigateToCategory('japanese')">일식</button>
         </div>
     </div>
-
-    <div id="infoScreen" class="container hidden">
-        <div id="info" class="info"></div>
-        <div id="mapInfo" class="info-map"></div>
+    
+    <div class="container" id="categoryPage" style="display:none;">
+        <h1 id="categoryTitle"></h1>
+        <div id="restaurantList"></div>
+        <button onclick="goBack()">뒤로가기</button>
     </div>
+
+    <div id="mapContainer"></div>
+    <div id="storeInfo"></div>
+
+    <!-- Kakao Maps API 스크립트 (자신의 JavaScript 키로 대체) -->
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887"></script>
+    <script>
+        const restaurants = {
+            korean: [
+                { name: "김밥천국", lat: 37.448365, lng: 127.127707, info: "가천대역 근처 한식" },
+                { name: "한솥도시락", lat: 37.447921, lng: 127.127187, info: "가천대역 근처 한솥 도시락" }
+            ],
+            chinese: [
+                { name: "홍콩반점", lat: 37.448151, lng: 127.128019, info: "가천대역 근처 중식" },
+                { name: "짜장명가", lat: 37.448760, lng: 127.127984, info: "가천대역 근처 짜장면 전문점" }
+            ],
+            western: [
+                { name: "피자헛", lat: 37.448620, lng: 127.128354, info: "가천대역 근처 피자" },
+                { name: "버거킹", lat: 37.447985, lng: 127.126874, info: "가천대역 근처 햄버거" }
+            ],
+            japanese: [
+                { name: "스시야", lat: 37.448276, lng: 127.128115, info: "가천대역 근처 스시" },
+                { name: "라멘하우스", lat: 37.448365, lng: 127.127540, info: "가천대역 근처 라멘" }
+            ]
+        };
+
+        let currentCategory = '';
+        let map;
+
+        function navigateToCategory(category) {
+            currentCategory = category;
+            document.getElementById("mainPage").style.display = "none";
+            document.getElementById("categoryPage").style.display = "block";
+            document.getElementById("categoryTitle").textContent = `가천대역 근처 ${category} 맛집`;
+            displayRestaurants(restaurants[category]);
+        }
+
+        function displayRestaurants(categoryRestaurants) {
+            const restaurantList = document.getElementById("restaurantList");
+            restaurantList.innerHTML = '';
+            categoryRestaurants.forEach(store => {
+                const button = document.createElement("button");
+                button.textContent = store.name;
+                button.classList.add("button");
+                button.onclick = () => showMap(store);
+                restaurantList.appendChild(button);
+            });
+        }
+
+        function showMap(store) {
+            document.getElementById("mapContainer").style.display = "block";
+            if (!map) {
+                map = new kakao.maps.Map(document.getElementById("mapContainer"), {
+                    center: new kakao.maps.LatLng(store.lat, store.lng),
+                    level: 4
+                });
+            } else {
+                map.setCenter(new kakao.maps.LatLng(store.lat, store.lng));
+            }
+
+            const marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(store.lat, store.lng)
+            });
+            marker.setMap(map);
+
+            document.getElementById("storeInfo").innerHTML = `<h2>${store.name}</h2><p>${store.info}</p>`;
+        }
+
+        function goBack() {
+            document.getElementById("mainPage").style.display = "block";
+            document.getElementById("categoryPage").style.display = "none";
+            document.getElementById("mapContainer").style.display = "none";
+            document.getElementById("storeInfo").innerHTML = '';
+            map = null; // 맵 초기화
+        }
+    </script>
 </body>
 </html>
-
