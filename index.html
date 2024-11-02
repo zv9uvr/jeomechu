@@ -12,43 +12,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
             margin: 0;
             background-color: #f9f9f9;
+            padding-top: 20px;
         }
 
         h1 {
             font-size: 2.5em;
             font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background: #F15F5F;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .button:hover {
-            background: #e05252;
-        }
-
-        .button:active {
-            transform: scale(0.95);
-            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
         }
 
         .input-group {
@@ -87,7 +61,7 @@
         }
 
         .location-button:before {
-            content: '⌕'; /* 변경된 돋보기 아이콘 */
+            content: '⌕'; /* 돋보기 아이콘 */
             font-size: 1.2em;
         }
 
@@ -100,9 +74,37 @@
             box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .button:hover {
+            background: #e05252;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
         .map-container {
             display: flex;
             gap: 20px;
+            margin-top: 20px;
         }
 
         #map {
@@ -165,16 +167,16 @@
 <body>
     <h1>저녁 메뉴 추천</h1>
 
+    <div class="input-group">
+        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
+        <button class="location-button" onclick="setLocation()"></button>
+    </div>
+
     <div class="button-group">
         <button class="button" onclick="searchPlaces('한식')">한식</button>
         <button class="button" onclick="searchPlaces('중식')">중식</button>
         <button class="button" onclick="searchPlaces('양식')">양식</button>
         <button class="button" onclick="searchPlaces('일식')">일식</button>
-    </div>
-
-    <div class="input-group">
-        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
-        <button class="location-button" onclick="setLocation()"></button>
     </div>
 
     <div class="map-container">
