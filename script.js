@@ -11,10 +11,10 @@ window.onload = function() {
 
 
 function showRestaurantScreen(category) {
-    currentCategory = category;
-    document.getElementById('menuScreen').classList.add('hidden');
-    document.getElementById('restaurantScreen').classList.remove('hidden');
-    setLocation(); // Default to current location when showing restaurants
+    currentCategory = category; // 선택한 카테고리 저장
+    document.getElementById('menuScreen').classList.add('hidden'); // 메뉴 화면 숨기기
+    document.getElementById('restaurantScreen').classList.remove('hidden'); // 음식점 화면 보이기
+    setLocation(); // 현재 위치에 기반하여 음식점 검색
 }
 
 function goBack() {
