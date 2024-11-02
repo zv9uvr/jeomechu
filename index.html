@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천</title>
+    <title>저녁 메뉴 추천1</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         body {
@@ -149,6 +149,20 @@
         .refresh-button:active {
             background-color: #388E3C;
         }
+
+        .warning-message {
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            display: none;
+            color: black;
+        }
+
+        .reset-link {
+            color: red;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -169,6 +183,9 @@
     <div class="map-container">
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
+            <div class="warning-message" id="warning-message">
+                더 이상 새로운 음식점이 없습니다. <span class="reset-link" onclick="resetRestaurants()">초기화</span> 하시겠습니까?
+            </div>
             <button class="refresh-button" onclick="refreshRandomPlaces()">⟳</button>
         </div>
     </div>
@@ -217,6 +234,7 @@
             clearMarkers();
             allPlaces = [];
             displayedPlaces = [];
+            hideWarningMessage();
 
             var options = {
                 location: centerPosition, 
@@ -260,6 +278,11 @@
             var availablePlaces = allPlaces.filter(function(place) {
                 return !displayedPlaces.includes(place); // 이미 표시된 곳은 제외
             });
+
+            if (availablePlaces.length === 0) {
+                showWarningMessage();
+                return;
+            }
 
             var randomPlaces = shuffleArray(availablePlaces).slice(0, 3); // 무작위로 세 개 선택
             displayedPlaces = randomPlaces; // 현재 표시된 음식점을 업데이트
@@ -313,6 +336,15 @@
             centerPosition = null;
             allPlaces = [];
             displayedPlaces = [];
+            hideWarningMessage();
+        }
+
+        function showWarningMessage() {
+            document.getElementById('warning-message').style.display = 'block';
+        }
+
+        function hideWarningMessage() {
+            document.getElementById('warning-message').style.display = 'none';
         }
     </script>
 </body>
