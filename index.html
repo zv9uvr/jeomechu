@@ -108,6 +108,20 @@
             box-sizing: border-box;
         }
 
+        .warning-message {
+            font-size: 0.8em;
+            color: black;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .reset-link {
+            color: red;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
         .restaurant-item {
             padding: 10px;
             background-color: #FFD8D8;
@@ -136,20 +150,6 @@
 
         .refresh-button:before {
             content: '⟳'; /* 화살표 돌아가는 기호 */
-        }
-
-        .warning-message {
-            font-size: 0.8em;
-            margin-bottom: 10px;
-            display: none;
-            color: black;
-        }
-
-        .reset-link {
-            color: red;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
         }
     </style>
 </head>
@@ -180,6 +180,8 @@
 
     <script>
         var map, ps, marker, markers = [];
+        var displayedRestaurants = [];
+        var allRestaurants = [];
 
         function initMap() {
             var mapContainer = document.getElementById('map');
@@ -223,17 +225,31 @@
 
         function placesSearchCB(data, status) {
             if (status === kakao.maps.services.Status.OK) {
-                removeMarkers();
-                var restaurantList = document.getElementById('restaurant-list');
-                restaurantList.innerHTML = '';
+                allRestaurants = data;
+                displayedRestaurants = [];
+                displayRandomRestaurants();
+            } else {
+                alert("검색 결과가 없습니다.");
+            }
+        }
 
-                var randomRestaurants = data.sort(() => 0.5 - Math.random()).slice(0, 3);
+        function displayRandomRestaurants() {
+            var restaurantList = document.getElementById('restaurant-list');
+            restaurantList.innerHTML = '';
+            document.getElementById('warning-message').style.display = 'none';
+
+            var randomRestaurants = allRestaurants.filter(place => !displayedRestaurants.includes(place.id))
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            if (randomRestaurants.length === 0) {
+                document.getElementById('warning-message').style.display = 'block';
+            } else {
                 randomRestaurants.forEach(function(place) {
                     displayMarker(place);
                     displayRestaurant(place);
+                    displayedRestaurants.push(place.id);
                 });
-            } else {
-                alert("검색 결과가 없습니다.");
             }
         }
 
@@ -261,7 +277,14 @@
         }
 
         function refreshRestaurants() {
-            alert("재추천 기능은 아직 구현되지 않았습니다.");
+            removeMarkers();
+            displayRandomRestaurants();
+        }
+
+        function resetRestaurants() {
+            displayedRestaurants = [];
+            removeMarkers();
+            displayRandomRestaurants();
         }
     </script>
 </body>
