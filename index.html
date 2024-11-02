@@ -88,15 +88,15 @@
     <h1>저녁 메뉴 추천</h1>
 
     <div class="button-group">
-        <button class="button" onclick="searchPlaces()">한식</button>
-        <button class="button">중식</button>
-        <button class="button">양식</button>
-        <button class="button">일식</button>
+        <button class="button" onclick="searchPlaces('한식')">한식</button>
+        <button class="button" onclick="searchPlaces('중식')">중식</button>
+        <button class="button" onclick="searchPlaces('양식')">양식</button>
+        <button class="button" onclick="searchPlaces('일식')">일식</button>
     </div>
 
     <div class="input-group">
         <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
-        <p>지역을 입력하지 않으면 사용자의 위치를 중심으로 음식점 리스트가 결정됩니다 :)</p>
+        <p>지역을 입력해주세요! 입력하지 않으면 청남사함을 중심으로 설정됩니다 ;)</p>
     </div>
 
     <button class="location-button" onclick="setLocation()">위치 설정</button>
@@ -105,8 +105,8 @@
     <div id="map"></div>
 
     <script>
-        var map, ps, marker;
-        
+        var map, ps, marker, markers = [];
+
         // Kakao Map Initialization
         function initMap() {
             var mapContainer = document.getElementById('map');
@@ -149,8 +149,8 @@
             }
         }
 
-        // 한식 음식점 검색 함수
-        function searchPlaces() {
+        // 특정 음식점 종류에 맞게 검색
+        function searchPlaces(keyword) {
             var locationInput = document.getElementById('location-input').value;
 
             if (locationInput) {
@@ -160,8 +160,11 @@
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                         map.setCenter(coords);
 
-                        // 한식 검색 시작
-                        ps.keywordSearch('한식', placesSearchCB, { location: coords, radius: 1000 });
+                        // 기존 마커 제거
+                        clearMarkers();
+
+                        // 음식점 종류별 검색 시작
+                        ps.keywordSearch(keyword, placesSearchCB, { location: coords, radius: 1000 });
                     } else {
                         alert("위치를 찾을 수 없습니다.");
                     }
@@ -178,7 +181,7 @@
                     displayMarker(data[i]);
                 }
             } else {
-                alert("주변에 한식 음식점을 찾을 수 없습니다.");
+                alert("주변에 검색된 음식점이 없습니다.");
             }
         }
 
@@ -189,11 +192,20 @@
                 position: placePosition
             });
             marker.setMap(map);
+            markers.push(marker);
 
             // 마커 클릭 시 장소 이름 표시
             kakao.maps.event.addListener(marker, 'click', function() {
                 alert(place.place_name);
             });
+        }
+
+        // 기존 마커 제거 함수
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
         }
     </script>
 </body>
