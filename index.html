@@ -211,6 +211,7 @@
         var map, ps, marker, markers = [];
         var displayedRestaurants = [];
         var allRestaurants = [];
+        var infoWindow = null; // 인포윈도우를 선언하여 재사용
 
         function initMap() {
             var mapContainer = document.getElementById('map');
@@ -290,7 +291,7 @@
                 map: map,
                 position: new kakao.maps.LatLng(place.y, place.x)
             });
-            markers.push(marker);
+            markers.push({ marker: marker, place: place });
         }
 
         function displayRestaurant(place) {
@@ -298,13 +299,34 @@
             var item = document.createElement('div');
             item.className = 'restaurant-item';
             item.textContent = place.place_name;
+            item.onclick = function() { highlightRestaurant(place); }; // 클릭 이벤트 추가
             restaurantList.appendChild(item);
         }
 
-        function removeMarkers() {
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
+        function highlightRestaurant(place) {
+            // 인포윈도우가 이미 있다면 닫기
+            if (infoWindow) {
+                infoWindow.close();
             }
+
+            // 인포윈도우 생성
+            infoWindow = new kakao.maps.InfoWindow({
+                content: `<div style="padding:5px; font-size:12px;">${place.place_name}</div>`,
+                removable: true
+            });
+
+            // 지도 중심 이동
+            map.setCenter(new kakao.maps.LatLng(place.y, place.x));
+
+            // 해당 마커에 인포윈도우 표시
+            var markerObj = markers.find(m => m.place.id === place.id);
+            if (markerObj) {
+                infoWindow.open(map, markerObj.marker);
+            }
+        }
+
+        function removeMarkers() {
+            markers.forEach(m => m.marker.setMap(null));
             markers = [];
         }
 
