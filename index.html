@@ -1,112 +1,262 @@
-<script>
-    // 카카오 지도 API 초기화
-    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-        mapOption = {
-            center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치: 서울
-            level: 5 // 지도의 확대 레벨
-        };
-
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-    var ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
-    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 }); // 정보 창 객체 생성
-
-    // 사용자가 입력한 위치를 기준으로 설정하는 함수
-    function setLocation() {
-        var location = document.getElementById('location-input').value;
-        
-        if (!location) {
-            alert('지역을 입력해 주세요.');
-            return;
-        }
-        
-        // 입력한 위치를 기준으로 검색
-        ps.keywordSearch(location, function(data, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var center = new kakao.maps.LatLng(data[0].y, data[0].x);
-                
-                map.setCenter(center); // 지도 중심 이동
-                searchPlaces(selectedCategory, center); // 선택된 음식 종류와 중심 위치로 검색
-            } else {
-                alert('입력한 지역을 찾을 수 없습니다.');
-            }
-        });
-    }
-
-    // 음식 종류를 저장하는 변수
-    var selectedCategory = '';
-
-    // 음식 종류에 따라 검색
-    function searchPlaces(category, center) {
-        selectedCategory = category;
-
-        var options = {
-            location: center, // 사용자가 설정한 위치
-            radius: 1000, // 반경 1KM
-            category_group_code: '' // 한식, 중식, 양식, 일식 등 음식 종류에 따라 빈 값으로 설정
-        };
-
-        switch (category) {
-            case '한식':
-                options.category_group_code = 'FD6';
-                break;
-            case '중식':
-                options.category_group_code = 'FD6';
-                break;
-            case '양식':
-                options.category_group_code = 'FD6';
-                break;
-            case '일식':
-                options.category_group_code = 'FD6';
-                break;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>저녁 메뉴 추천1</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
         }
 
-        ps.categorySearch(category, placesSearchCB, options);
-    }
-
-    // 장소 검색 콜백 함수
-    function placesSearchCB(data, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            displayPlaces(data); // 검색 결과를 화면에 표시
-        } else {
-            alert('검색 결과가 없습니다.');
+        h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
-    }
 
-    // 검색 결과 표시
-    function displayPlaces(places) {
-        var listEl = document.getElementById('restaurant-list');
-        listEl.innerHTML = ''; // 기존 검색 결과 삭제
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-        // 검색 결과 마커와 정보창을 생성
-        for (var i = 0; i < places.length; i++) {
-            var place = places[i];
-            var placePosition = new kakao.maps.LatLng(place.y, place.x);
+        .button {
+            padding: 10px 20px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .button:hover {
+            background: #e05252;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            width: 300px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .location-button {
+            padding: 10px 15px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .location-button:before {
+            content: '🔍';
+            font-size: 1.2em;
+        }
+
+        .location-button:hover {
+            background: #e05252;
+        }
+
+        .location-button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .map-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        #map {
+            width: 600px;
+            height: 400px;
+        }
+
+        .restaurant-list {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 200px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-item {
+            padding: 10px;
+            background-color: #FFD8D8;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: height 0.3s;
+            overflow: hidden;
+        }
+
+        .refresh-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .refresh-button:hover {
+            background-color: #45A049;
+        }
+
+        .refresh-button:active {
+            background-color: #388E3C;
+        }
+    </style>
+</head>
+<body>
+    <h1>저녁 메뉴 추천</h1>
+
+    <div class="button-group">
+        <button class="button" onclick="searchPlaces('한식')">한식</button>
+        <button class="button" onclick="searchPlaces('중식')">중식</button>
+        <button class="button" onclick="searchPlaces('양식')">양식</button>
+        <button class="button" onclick="searchPlaces('일식')">일식</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
+        <button class="location-button" onclick="setLocation()"></button>
+    </div>
+
+    <div class="map-container">
+        <div id="map"></div>
+        <div class="restaurant-list" id="restaurant-list">
+            <button class="refresh-button" onclick="resetRestaurants()">⟳</button>
+        </div>
+    </div>
+
+    <script>
+        var mapContainer = document.getElementById('map'),
+            mapOption = {
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 기본 위치
+                level: 5 
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+        var ps = new kakao.maps.services.Places(); 
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        var selectedCategory = '';
+
+        function setLocation() {
+            var location = document.getElementById('location-input').value;
             
-            // 마커 표시
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: placePosition
+            if (!location) {
+                alert('지역을 입력해 주세요.');
+                return;
+            }
+            
+            ps.keywordSearch(location, function(data, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var center = new kakao.maps.LatLng(data[0].y, data[0].x);
+                    map.setCenter(center);
+                    searchPlaces(selectedCategory, center); 
+                } else {
+                    alert('입력한 지역을 찾을 수 없습니다.');
+                }
             });
-
-            // 음식점 목록 추가
-            var itemEl = document.createElement('div');
-            itemEl.className = 'restaurant-item';
-            itemEl.innerText = place.place_name;
-            listEl.appendChild(itemEl);
-
-            (function(marker, place) {
-                kakao.maps.event.addListener(marker, 'click', function() {
-                    infowindow.setContent('<div>' + place.place_name + '</div>');
-                    infowindow.open(map, marker);
-                });
-            })(marker, place);
         }
-    }
 
-    // 초기화 기능
-    function resetRestaurants() {
-        document.getElementById('restaurant-list').innerHTML = '';
-        map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780)); // 서울로 초기화
-        selectedCategory = '';
-    }
-</script>
+        function searchPlaces(category, center) {
+            selectedCategory = category;
+
+            var options = {
+                location: center, 
+                radius: 1000, 
+                category_group_code: '' 
+            };
+
+            ps.keywordSearch(category, placesSearchCB, options);
+        }
+
+        function placesSearchCB(data, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                displayPlaces(data); 
+            } else {
+                alert('검색 결과가 없습니다.');
+            }
+        }
+
+        function displayPlaces(places) {
+            var listEl = document.getElementById('restaurant-list');
+            listEl.innerHTML = '';
+
+            for (var i = 0; i < places.length; i++) {
+                var place = places[i];
+                var placePosition = new kakao.maps.LatLng(place.y, place.x);
+                
+                var marker = new kakao.maps.Marker({
+                    map: map,
+                    position: placePosition
+                });
+
+                var itemEl = document.createElement('div');
+                itemEl.className = 'restaurant-item';
+                itemEl.innerText = place.place_name;
+                listEl.appendChild(itemEl);
+
+                (function(marker, place) {
+                    kakao.maps.event.addListener(marker, 'click', function() {
+                        infowindow.setContent('<div>' + place.place_name + '</div>');
+                        infowindow.open(map, marker);
+                    });
+                })(marker, place);
+            }
+        }
+
+        function resetRestaurants() {
+            document.getElementById('restaurant-list').innerHTML = '';
+            map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
+            selectedCategory = '';
+        }
+    </script>
+</body>
+</html>
