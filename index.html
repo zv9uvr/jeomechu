@@ -37,6 +37,229 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 1em;
+            box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5), /* 더 두껍고 어두운 안쪽 그림자 */
+                        0px 6px 10px rgba(0, 0, 0, 0.3); /* 바깥쪽 그림자 */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .button:hover {
+            background: #e05252;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.6), /* 눌렸을 때 더 진하게 */
+                        0px 3px 6px rgba(0, 0, 0, 0.3); /* 바깥쪽 그림자 */
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group input {
+            padding: 10px;
+            width: 300px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .location-button {
+            padding: 10px 15px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5), /* 더 두껍고 어두운 안쪽 그림자 */
+                        0px 6px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .location-button:hover {
+            background: #e05252;
+        }
+
+        .location-button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.6), /* 눌렸을 때 더 진하게 */
+                        0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #map {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>저녁 메뉴 추천</h1>
+
+    <div class="button-group">
+        <button class="button" onclick="searchPlaces('한식')">한식</button>
+        <button class="button" onclick="searchPlaces('중식')">중식</button>
+        <button class="button" onclick="searchPlaces('양식')">양식</button>
+        <button class="button" onclick="searchPlaces('일식')">일식</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
+        <button class="location-button" onclick="setLocation()">위치 설정</button>
+    </div>
+
+    <!-- Kakao Map -->
+    <div id="map"></div>
+
+    <script>
+        var map, ps, marker, markers = [];
+
+        // Kakao Map Initialization
+        function initMap() {
+            var mapContainer = document.getElementById('map');
+            var mapOption = { 
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 초기 서울 중심 좌표
+                level: 3
+            }; 
+            map = new kakao.maps.Map(mapContainer, mapOption);
+            ps = new kakao.maps.services.Places();
+        }
+
+        initMap();
+
+        function setLocation() {
+            var locationInput = document.getElementById('location-input').value;
+            
+            if (locationInput) {
+                var geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(locationInput, function(result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                        
+                        // 지도 중심을 설정한 위치로 이동
+                        map.setCenter(coords);
+                        
+                        // 기존 마커 제거
+                        if (marker) marker.setMap(null);
+
+                        // 새 위치에 마커 추가
+                        marker = new kakao.maps.Marker({
+                            position: coords
+                        });
+                        marker.setMap(map);
+                    } else {
+                        alert("위치를 찾을 수 없습니다.");
+                    }
+                });
+            } else {
+                alert("위치를 입력해 주세요.");
+            }
+        }
+
+        // 특정 음식점 종류에 맞게 검색
+        function searchPlaces(keyword) {
+            var locationInput = document.getElementById('location-input').value;
+
+            if (locationInput) {
+                var geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(locationInput, function(result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                        map.setCenter(coords);
+
+                        // 기존 마커 제거
+                        clearMarkers();
+
+                        // 음식점 종류별 검색 시작
+                        ps.keywordSearch(keyword, placesSearchCB, { location: coords, radius: 1000 });
+                    } else {
+                        alert("위치를 찾을 수 없습니다.");
+                    }
+                });
+            } else {
+                alert("위치를 입력해 주세요.");
+            }
+        }
+
+        // 장소 검색 결과 콜백 함수
+        function placesSearchCB(data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                for (var i = 0; i < data.length; i++) {
+                    displayMarker(data[i]);
+                }
+            } else {
+                alert("주변에 검색된 음식점이 없습니다.");
+            }
+        }
+
+        // 검색된 장소에 마커 표시 함수
+        function displayMarker(place) {
+            var placePosition = new kakao.maps.LatLng(place.y, place.x);
+            var marker = new kakao.maps.Marker({
+                position: placePosition
+            });
+            marker.setMap(map);
+            markers.push(marker);
+
+            // 마커 클릭 시 장소 이름 표시
+            kakao.maps.event.addListener(marker, 'click', function() {
+                alert(place.place_name);
+            });
+        }
+
+        // 기존 마커 제거 함수
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>저녁 메뉴 추천</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background: #F15F5F; /* 버튼 안쪽 밝은 색상 */
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
             box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2), /* 안쪽 경계 */
                         0px 4px 6px rgba(0, 0, 0, 0.3); /* 바깥쪽 그림자 */
             transition: transform 0.2s, box-shadow 0.2s;
