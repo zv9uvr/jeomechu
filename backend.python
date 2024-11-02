@@ -3,14 +3,14 @@ import requests
 import os
 
 app = Flask(__name__)
-KAKAO_API_KEY = os.getenv("KAKAO_API_KEY")  # 환경 변수에서 API 키 가져오기
+KAKAO_API_KEY = os.getenv("12423bc5626e8970d0e4d220b391bd67")  # 환경 변수에서 API 키 가져오기
 
 # 장소 키워드 검색을 통해 장소 ID를 가져옴
 @app.route('/search_place', methods=['GET'])
 def search_place():
     query = request.args.get('query')  # 음식점 이름
     url = f"https://dapi.kakao.com/v2/local/search/keyword.json?query={query}"
-    headers = {"Authorization": f"KakaoAK {KAKAO_API_KEY}"}
+    headers = {"Authorization": f"KakaoAK {12423bc5626e8970d0e4d220b391bd67}"}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
