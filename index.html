@@ -111,9 +111,16 @@
             padding: 10px;
             background-color: #FFD8D8; /* 분홍색 배경 변경 */
             color: black;
+            border: none;
             border-radius: 5px;
             text-align: center;
-            font-weight: bold;
+            cursor: pointer;
+            transition: height 0.3s;
+            overflow: hidden;
+        }
+
+        .restaurant-item.expanded {
+            height: auto;
         }
 
         .refresh-button {
@@ -149,7 +156,13 @@
             color: red;
             text-decoration: underline;
             cursor: pointer;
-            font-weight: bold; /* 초기화만 볼드체 적용 */
+            font-weight: bold;
+        }
+
+        .menu-list {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -300,11 +313,30 @@
             displayedRestaurants = displayedRestaurants.concat(lastRestaurants);
 
             lastRestaurants.forEach(function(place) {
-                var item = document.createElement('div');
+                var item = document.createElement('button');
                 item.className = 'restaurant-item';
                 item.textContent = place.place_name;
+                item.onclick = function() { toggleMenu(item, place) };
                 restaurantList.insertBefore(item, document.querySelector('.refresh-button'));
             });
+        }
+
+        // 메뉴를 토글하는 함수
+        function toggleMenu(button, place) {
+            if (button.classList.contains('expanded')) {
+                // 이미 확장되어 있으면 축소
+                button.classList.remove('expanded');
+                button.querySelector('.menu-list').remove();
+            } else {
+                // 확장되어 있지 않으면 확장
+                button.classList.add('expanded');
+
+                // 예시 메뉴 목록
+                var menuList = document.createElement('div');
+                menuList.className = 'menu-list';
+                menuList.textContent = "대표 메뉴: 김치찌개, 비빔밥, 불고기"; // 예시 메뉴
+                button.appendChild(menuList);
+            }
         }
 
         // 이전 선택된 음식점을 제외한 무작위 음식점을 다시 표시
@@ -329,9 +361,10 @@
             // 새로 선택된 음식점 목록 업데이트 및 표시
             var newSelection = remainingRestaurants.sort(() => 0.5 - Math.random()).slice(0, 3);
             newSelection.forEach(function(place) {
-                var item = document.createElement('div');
+                var item = document.createElement('button');
                 item.className = 'restaurant-item';
                 item.textContent = place.place_name;
+                item.onclick = function() { toggleMenu(item, place) };
                 restaurantList.insertBefore(item, document.querySelector('.refresh-button'));
             });
 
