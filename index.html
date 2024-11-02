@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,6 +75,13 @@
         .location-button:hover {
             background-color: #6a4ea3;
         }
+
+        #map {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -92,5 +100,26 @@
     </div>
 
     <button class="location-button">위치 설정</button>
+
+    <!-- Kakao Map -->
+    <div id="map"></div>
+
+    <script>
+        // Kakao Map Initialization
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+            mapOption = { 
+                center: new kakao.maps.LatLng(37.5665, 126.9780), // 지도 중심 좌표 (서울 청남사함 기준)
+                level: 3 // 지도 확대 레벨
+            }; 
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도 생성
+
+        // 지도에 마커 추가
+        var markerPosition  = new kakao.maps.LatLng(37.5665, 126.9780); 
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+        marker.setMap(map);
+    </script>
 </body>
 </html>
