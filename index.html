@@ -170,6 +170,7 @@
     <script>
         var map, ps, marker, markers = [];
         var lastRestaurants = []; // 이전에 선택된 음식점 목록 저장
+        var allRestaurants = [];  // 전체 음식점 목록 저장
 
         // Kakao Map Initialization
         function initMap() {
@@ -241,6 +242,7 @@
         // 장소 검색 결과 콜백 함수
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
+                allRestaurants = data; // 전체 음식점 목록 저장
                 for (var i = 0; i < data.length; i++) {
                     displayMarker(data[i]);
                 }
@@ -288,7 +290,7 @@
                 restaurantList.appendChild(item);
             });
 
-            // 재추천 버튼 추가
+            // 재추천 버튼을 다시 추가
             restaurantList.appendChild(document.querySelector('.refresh-button'));
         }
 
@@ -298,8 +300,8 @@
             restaurantList.innerHTML = ''; // 기존 리스트 초기화
 
             // 이전 선택된 음식점을 제외하고 무작위로 세 개 선택
-            var remainingRestaurants = markers.filter(
-                marker => !lastRestaurants.some(place => place.place_name === marker.place_name)
+            var remainingRestaurants = allRestaurants.filter(
+                place => !lastRestaurants.some(selected => selected.place_name === place.place_name)
             );
 
             var newSelection = remainingRestaurants.sort(() => 0.5 - Math.random()).slice(0, 3);
@@ -312,7 +314,7 @@
 
             lastRestaurants = newSelection; // 새로운 선택 목록 업데이트
 
-            // 재추천 버튼 추가
+            // 재추천 버튼을 다시 추가
             restaurantList.appendChild(document.querySelector('.refresh-button'));
         }
     </script>
