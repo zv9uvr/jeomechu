@@ -235,15 +235,19 @@
 
         function displayRandomRestaurants() {
             var restaurantList = document.getElementById('restaurant-list');
-            restaurantList.innerHTML = '';
-            document.getElementById('warning-message').style.display = 'none';
+            var warningMessage = document.getElementById('warning-message');
+            var refreshButton = document.querySelector('.refresh-button');
+            
+            // 기존 음식점 리스트만 제거하고, 경고 메시지와 재추천 버튼은 유지
+            restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
+            warningMessage.style.display = 'none';
 
             var randomRestaurants = allRestaurants.filter(place => !displayedRestaurants.includes(place.id))
                 .sort(() => 0.5 - Math.random())
                 .slice(0, 3);
 
             if (randomRestaurants.length === 0) {
-                document.getElementById('warning-message').style.display = 'block';
+                warningMessage.style.display = 'block';
             } else {
                 randomRestaurants.forEach(function(place) {
                     displayMarker(place);
