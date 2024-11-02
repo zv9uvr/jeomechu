@@ -3,7 +3,7 @@
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services"></script>
     <style>
         /* 전체 스타일 */
         
@@ -101,6 +101,15 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
+        .button:hover {
+            background: #e05252;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
         .map-container {
             display: flex;
             gap: 20px;
@@ -148,11 +157,21 @@
             background-color: #FFD8D8;
             color: black;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
-            transition: height 0.3s;
-            overflow: hidden;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+        }
+
+        .restaurant-item:hover {
+            background-color: #e6a5a5;
+        }
+
+        .restaurant-item:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
         }
 
         .refresh-button {
