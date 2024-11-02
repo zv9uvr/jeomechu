@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천1</title>
+    <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         body {
@@ -183,8 +183,9 @@
         var map = new kakao.maps.Map(mapContainer, mapOption);
         var ps = new kakao.maps.services.Places(); 
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
         var selectedCategory = '';
+        var centerPosition;
+        var markers = [];
 
         function setLocation() {
             var location = document.getElementById('location-input').value;
@@ -196,67 +197,84 @@
             
             ps.keywordSearch(location, function(data, status) {
                 if (status === kakao.maps.services.Status.OK) {
-                    var center = new kakao.maps.LatLng(data[0].y, data[0].x);
-                    map.setCenter(center);
-                    searchPlaces(selectedCategory, center); 
+                    centerPosition = new kakao.maps.LatLng(data[0].y, data[0].x);
+                    map.setCenter(centerPosition);
                 } else {
                     alert('입력한 지역을 찾을 수 없습니다.');
                 }
             });
         }
 
-        function searchPlaces(category, center) {
+        function searchPlaces(category) {
             selectedCategory = category;
+            if (!centerPosition) {
+                alert('먼저 지역을 설정해 주세요.');
+                return;
+            }
+
+            clearMarkers();
 
             var options = {
-                location: center, 
+                location: centerPosition, 
                 radius: 1000
             };
 
-            ps.keywordSearch(category, placesSearchCB, options);
-        }
-
-        function placesSearchCB(data, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                displayPlaces(data); 
-            } else {
-                alert('검색 결과가 없습니다.');
-            }
+            ps.keywordSearch(category, function(data, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    displayPlaces(data); 
+                    displayRandomPlaces(data); // 무작위로 세 개 선택하여 오른쪽에 표시
+                } else {
+                    alert('검색 결과가 없습니다.');
+                }
+            }, options);
         }
 
         function displayPlaces(places) {
-            var listEl = document.getElementById('restaurant-list');
-            listEl.innerHTML = '';
-
-            // 음식점 목록에서 무작위로 세 개의 항목 선택
-            if (places.length > 3) {
-                places = shuffleArray(places).slice(0, 3); // 무작위로 섞고 세 개 선택
-            }
-
             for (var i = 0; i < places.length; i++) {
-                var place = places[i];
-                var placePosition = new kakao.maps.LatLng(place.y, place.x);
+                var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
                 
                 var marker = new kakao.maps.Marker({
                     map: map,
                     position: placePosition
                 });
-
-                var itemEl = document.createElement('div');
-                itemEl.className = 'restaurant-item';
-                itemEl.innerText = place.place_name;
-                listEl.appendChild(itemEl);
+                markers.push(marker);
 
                 (function(marker, place) {
                     kakao.maps.event.addListener(marker, 'click', function() {
                         infowindow.setContent('<div>' + place.place_name + '</div>');
                         infowindow.open(map, marker);
                     });
-                })(marker, place);
+                })(marker, places[i]);
             }
         }
 
-        // 배열을 무작위로 섞는 함수
+        function displayRandomPlaces(places) {
+            var listEl = document.getElementById('restaurant-list');
+            listEl.innerHTML = '';
+
+            var randomPlaces = shuffleArray(places).slice(0, 3); // 무작위로 세 개 선택
+
+            for (var i = 0; i < randomPlaces.length; i++) {
+                var place = randomPlaces[i];
+                var itemEl = document.createElement('div');
+                itemEl.className = 'restaurant-item';
+                itemEl.innerText = place.place_name;
+                listEl.appendChild(itemEl);
+
+                (function(place) {
+                    itemEl.addEventListener('click', function() {
+                        var position = new kakao.maps.LatLng(place.y, place.x);
+                        map.panTo(position);
+                        infowindow.setContent('<div>' + place.place_name + '</div>');
+                        infowindow.open(map, new kakao.maps.Marker({
+                            map: map,
+                            position: position
+                        }));
+                    });
+                })(place);
+            }
+        }
+
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -265,10 +283,20 @@
             return array;
         }
 
+        function clearMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
         function resetRestaurants() {
             document.getElementById('restaurant-list').innerHTML = '';
+            infowindow.close();
+            clearMarkers();
             map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
             selectedCategory = '';
+            centerPosition = null;
         }
     </script>
 </body>
