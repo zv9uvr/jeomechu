@@ -17,8 +17,8 @@ body {
 /* 제목에 Do Hyeon 폰트 적용 */
 h1 {
     font-family: 'Do Hyeon', sans-serif;
-    font-weight: bold;
-    font-size: 150pt;
+    font-weight: noraml;
+    font-size: 100pt;
     color: #333;
 }
 
