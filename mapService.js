@@ -1,10 +1,16 @@
-window.onload = function() {
-    setLocation(); // 페이지 로드 시 기본 위치 설정
-};
-
 let markers = [];
 let currentCategory;
 let map; // 전역 변수로 map 선언
+
+window.onload = function() {
+    const container = document.getElementById('map'); // 'map' id 확인
+    const options = {
+        center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 좌표 예시
+        level: 3
+    };
+
+    map = new kakao.maps.Map(container, options); // 기존 선언된 map 변수를 사용
+};
 
 function showRestaurantScreen(category) {
     currentCategory = category; // 선택한 카테고리 저장
@@ -15,7 +21,7 @@ function showRestaurantScreen(category) {
 
 function setLocation() {
     const locationInput = document.getElementById('locationInput').value.trim();
-    getCoordinates(locationInput || '성남시', currentCategory); // 기본값 설정
+    getCoordinates(locationInput || '성남시', currentCategory);
 }
 
 function getCoordinates(address, category) {
@@ -79,5 +85,4 @@ function goBack() {
 
 function getNewRecommendations() {
     // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직
-    // 새로운 음식을 추천하는 로직 구현
 }
