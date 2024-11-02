@@ -1,3 +1,4 @@
+
 let currentCategory; // 전역 변수로 현재 카테고리 저장
 let map; // 전역 변수로 지도 저장
 let markers = []; // 마커 저장
