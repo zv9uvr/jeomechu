@@ -3,7 +3,7 @@
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services"></script>
     <style>
         /* 전체 스타일 */
         
@@ -58,6 +58,7 @@
             border-radius: 10px 0 0 10px;
             outline: none;
             box-sizing: border-box;
+            height: 100%; /* 입력 창의 높이 설정 */
         }
 
         .location-button {
@@ -72,6 +73,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100%; /* 버튼의 높이 입력 창과 맞춤 */
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
