@@ -19,7 +19,7 @@ body {
 /* 제목 스타일 */
 h1 {
     font-family: 'Do Hyeon', sans-serif;
-    font-weight: normal; /* 오타 수정: 'normal' */
+    font-weight: normal;
     margin-bottom: 5px; /* 제목과 버튼 사이 간격 줄이기 */
     font-size: 3rem; /* 제목 크기 조정 */
     color: #333;
@@ -55,7 +55,7 @@ body, input, button {
     box-shadow: 0 2px #574b90, inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* 추천 음식점 텍스트 스타일 (두 번째 화면에서 작게 표시) */
+/* 추천 음식점 텍스트 스타일 */
 h2 {
     font-size: 1.5rem; /* 텍스트 크기 줄이기 */
     font-weight: normal;
