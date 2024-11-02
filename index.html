@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천1</title>
+    <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         body {
@@ -255,7 +255,7 @@
 
         function displayRandomPlaces() {
             var listEl = document.getElementById('restaurant-list');
-            listEl.innerHTML = '';
+            listEl.querySelectorAll('.restaurant-item').forEach(item => item.remove()); // 기존 리스트 초기화 (재추천 버튼 제외)
 
             var availablePlaces = allPlaces.filter(function(place) {
                 return !displayedPlaces.includes(place); // 이미 표시된 곳은 제외
@@ -305,7 +305,7 @@
         }
 
         function resetRestaurants() {
-            document.getElementById('restaurant-list').innerHTML = '';
+            document.getElementById('restaurant-list').querySelectorAll('.restaurant-item').forEach(item => item.remove());
             infowindow.close();
             clearMarkers();
             map.setCenter(new kakao.maps.LatLng(37.5665, 126.9780));
