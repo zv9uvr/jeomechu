@@ -21,7 +21,7 @@ h1 {
     font-family: 'Do Hyeon', sans-serif;
     font-weight: normal;
     margin-bottom: 10px; /* 제목과 버튼 사이 간격 조정 */
-    font-size: 4rem; /* 제목 크기 조정 */
+    font-size: 8rem; /* 제목 크기 조정 */
     color: #333;
 }
 
@@ -32,7 +32,7 @@ body, input, button {
 
 /* 버튼 스타일 */
 .button {
-    font-size: 1em;
+    font-size: 2em;
     padding: 10px 20px; /* 내부 여백 조정 */
     margin: 5px; /* 버튼 간의 간격 조정 */
     border: none;
@@ -59,7 +59,7 @@ body, input, button {
 input[type="text"] {
     padding: 10px; /* 내부 여백 조정 */
     margin: 10px 0; /* 상하 간격 조정 */
-    width: 100%;
+    width: 150%;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
