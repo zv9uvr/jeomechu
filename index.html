@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
@@ -31,14 +30,13 @@
 
         .button {
             padding: 10px 20px;
-            background: #F15F5F; /* 버튼 안쪽 밝은 색상 */
+            background: #F15F5F;
             color: white;
             border: none;
             border-radius: 10px;
             cursor: pointer;
             font-size: 1em;
-            box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5), /* 더 두껍고 어두운 안쪽 그림자 */
-                        0px 6px 10px rgba(0, 0, 0, 0.3); /* 바깥쪽 그림자 */
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2); /* 가장자리 두께 줄임 */
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -48,8 +46,7 @@
 
         .button:active {
             transform: scale(0.95);
-            box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.6), /* 눌렸을 때 더 진하게 */
-                        0px 3px 6px rgba(0, 0, 0, 0.3); /* 바깥쪽 그림자 */
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
         }
 
         .input-group {
@@ -74,8 +71,7 @@
             border-radius: 0 10px 10px 0;
             cursor: pointer;
             font-size: 1em;
-            box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.5), /* 더 두껍고 어두운 안쪽 그림자 */
-                        0px 6px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -85,8 +81,7 @@
 
         .location-button:active {
             transform: scale(0.95);
-            box-shadow: inset 0px 0px 6px rgba(0, 0, 0, 0.6), /* 눌렸을 때 더 진하게 */
-                        0px 3px 6px rgba(0, 0, 0, 0.3);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
         }
 
         .map-container {
@@ -278,7 +273,7 @@
         // 음식점 리스트에서 무작위로 세 개의 음식점을 선택해 표시하는 함수
         function displayRandomRestaurants(data) {
             var restaurantList = document.getElementById('restaurant-list');
-            restaurantList.innerHTML = ''; // 기존 리스트 초기화
+            restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
 
             // 무작위로 세 개의 음식점 선택
             lastRestaurants = data.sort(() => 0.5 - Math.random()).slice(0, 3);
@@ -287,17 +282,14 @@
                 var item = document.createElement('div');
                 item.className = 'restaurant-item';
                 item.textContent = place.place_name;
-                restaurantList.appendChild(item);
+                restaurantList.insertBefore(item, document.querySelector('.refresh-button'));
             });
-
-            // 재추천 버튼을 다시 추가
-            restaurantList.appendChild(document.querySelector('.refresh-button'));
         }
 
         // 이전 선택된 음식점을 제외한 무작위 음식점을 다시 표시
         function refreshRestaurants() {
             var restaurantList = document.getElementById('restaurant-list');
-            restaurantList.innerHTML = ''; // 기존 리스트 초기화
+            restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
 
             // 이전 선택된 음식점을 제외하고 무작위로 세 개 선택
             var remainingRestaurants = allRestaurants.filter(
@@ -309,13 +301,10 @@
                 var item = document.createElement('div');
                 item.className = 'restaurant-item';
                 item.textContent = place.place_name;
-                restaurantList.appendChild(item);
+                restaurantList.insertBefore(item, document.querySelector('.refresh-button'));
             });
 
             lastRestaurants = newSelection; // 새로운 선택 목록 업데이트
-
-            // 재추천 버튼을 다시 추가
-            restaurantList.appendChild(document.querySelector('.refresh-button'));
         }
     </script>
 </body>
