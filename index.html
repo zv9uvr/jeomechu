@@ -6,6 +6,7 @@
     <title>저녁 메뉴 추천</title>
     <link rel="stylesheet" href="style.css?v=1.0"> <!-- 버전 정보 추가 -->
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Batang&display=swap" rel="stylesheet"> <!-- 폰트 추가 -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- 파비콘 추가 -->
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=bf82efef9d1689d7ae8db1f8a0b75887&libraries=services"></script>
     <script src="mapService.js?v=1.0" defer></script> <!-- 버전 정보 추가 -->
     <script src="script.js?v=1.0" defer></script> <!-- 버전 정보 추가 -->
@@ -39,23 +40,16 @@
         <div id="mapInfo" class="info-map"></div>
     </div>
 
+    <script src="mapService.js" defer></script>
+    <script src="script.js" defer></script>
     <script>
         // 위치 설정 함수
         function setLocation() {
-            const locationInput = document.getElementById('locationInput').value.trim();
-            const address = locationInput || '성남시'; // 기본값
-            getCoordinates(address);
+            const locationInput = document.getElementById('locationInput').value;
+            const x = 127.12629039752; // 예시 경도
+            const y = 37.4199323570328; // 예시 위도
+            searchPlaces(x, y); // 음식점 검색 호출
         }
-
-        // 지도를 초기화하는 함수
-        window.onload = function() {
-            const container = document.getElementById('map'); // 'map' id 확인
-            const options = {
-                center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 좌표 예시
-                level: 3
-            };
-            const map = new kakao.maps.Map(container, options);
-        };
 
         // 음식점 검색 함수
         function searchPlaces(x, y) {
@@ -64,7 +58,7 @@
             fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?category_group_code=${categoryGroupCode}&x=${x}&y=${y}&radius=1000&page=1&size=15`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'KakaoAK bf82efef9d1689d7ae8db1f8a0b75887' // 여기에 본인의 API 키를 입력
+                    'Authorization': 'KakaoAK YOUR_API_KEY' // 'YOUR_API_KEY'에 본인의 API 키를 입력
                 }
             })
             .then(response => {
