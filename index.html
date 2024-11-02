@@ -36,7 +36,7 @@
             border-radius: 10px;
             cursor: pointer;
             font-size: 1em;
-            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2); /* 가장자리 두께 줄임 */
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -137,6 +137,14 @@
         .refresh-button:active {
             background-color: #388E3C;
         }
+
+        .warning-message {
+            color: red;
+            font-weight: bold;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+            display: none; /* 초기에는 보이지 않음 */
+        }
     </style>
 </head>
 <body>
@@ -157,6 +165,7 @@
     <div class="map-container">
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
+            <div class="warning-message" id="warning-message">더 이상 새로운 음식점이 없습니다. 초기화 하시겠습니까?</div>
             <!-- 음식점 이름이 표시될 부분 -->
             <button class="refresh-button" onclick="refreshRestaurants()">⟳</button>
         </div>
@@ -164,7 +173,8 @@
 
     <script>
         var map, ps, marker, markers = [];
-        var lastRestaurants = []; // 이전에 선택된 음식점 목록 저장
+        var lastRestaurants = []; // 마지막에 표시된 음식점
+        var displayedRestaurants = []; // 이미 표시된 음식점 목록
         var allRestaurants = [];  // 전체 음식점 목록 저장
 
         // Kakao Map Initialization
@@ -212,6 +222,8 @@
         // 특정 음식점 종류에 맞게 검색
         function searchPlaces(keyword) {
             var locationInput = document.getElementById('location-input').value;
+            displayedRestaurants = []; // 검색할 때마다 초기화
+            document.getElementById('warning-message').style.display = 'none'; // 경고 메시지 숨김
 
             if (locationInput) {
                 var geocoder = new kakao.maps.services.Geocoder();
@@ -277,6 +289,7 @@
 
             // 무작위로 세 개의 음식점 선택
             lastRestaurants = data.sort(() => 0.5 - Math.random()).slice(0, 3);
+            displayedRestaurants = displayedRestaurants.concat(lastRestaurants);
 
             lastRestaurants.forEach(function(place) {
                 var item = document.createElement('div');
@@ -288,14 +301,24 @@
 
         // 이전 선택된 음식점을 제외한 무작위 음식점을 다시 표시
         function refreshRestaurants() {
+            var warningMessage = document.getElementById('warning-message');
+            var remainingRestaurants = allRestaurants.filter(
+                place => !displayedRestaurants.some(selected => selected.place_name === place.place_name)
+            );
+
+            // 모든 음식점이 표시되었을 때 경고 메시지 표시
+            if (remainingRestaurants.length === 0) {
+                warningMessage.style.display = 'block';
+                return;
+            } else {
+                warningMessage.style.display = 'none';
+            }
+
+            // 기존 음식점 목록 삭제
             var restaurantList = document.getElementById('restaurant-list');
             restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
 
-            // 이전 선택된 음식점을 제외하고 무작위로 세 개 선택
-            var remainingRestaurants = allRestaurants.filter(
-                place => !lastRestaurants.some(selected => selected.place_name === place.place_name)
-            );
-
+            // 새로 선택된 음식점 목록 업데이트 및 표시
             var newSelection = remainingRestaurants.sort(() => 0.5 - Math.random()).slice(0, 3);
             newSelection.forEach(function(place) {
                 var item = document.createElement('div');
@@ -304,7 +327,9 @@
                 restaurantList.insertBefore(item, document.querySelector('.refresh-button'));
             });
 
-            lastRestaurants = newSelection; // 새로운 선택 목록 업데이트
+            // 표시된 음식점 목록에 추가
+            displayedRestaurants = displayedRestaurants.concat(newSelection);
+            lastRestaurants = newSelection;
         }
     </script>
 </body>
