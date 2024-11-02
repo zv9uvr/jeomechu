@@ -15,7 +15,7 @@ function showRestaurantScreen(category) {
 
 function setLocation() {
     const locationInput = document.getElementById('locationInput').value.trim();
-    getCoordinates(locationInput || '성남시', currentCategory);
+    getCoordinates(locationInput || '성남시', currentCategory); // 기본값 설정
 }
 
 function getCoordinates(address, category) {
@@ -79,5 +79,5 @@ function goBack() {
 
 function getNewRecommendations() {
     // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직
+    // 새로운 음식을 추천하는 로직 구현
 }
-ㅍ
