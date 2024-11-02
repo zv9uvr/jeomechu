@@ -18,6 +18,7 @@ body {
 h1 {
     font-family: 'Do Hyeon', sans-serif;
     font-weight: noraml;
+    margin-bottom: 10px;
     font-size: 100pt;
     color: #333;
 }
