@@ -1,5 +1,4 @@
 window.onload = function() {
-    // 초기 위치 설정
     setLocation(); // 페이지 로드 시 기본 위치 설정
 };
 
@@ -7,15 +6,19 @@ let markers = [];
 let currentCategory;
 let map; // 전역 변수로 map 선언
 
-function setLocation() {
-    const locationInput = document.getElementById('locationInput').value.trim();
-    // 기본값으로 '성남시' 사용
-    getCoordinates(locationInput || '성남시', currentCategory); 
+function showRestaurantScreen(category) {
+    currentCategory = category; // 선택한 카테고리 저장
+    document.getElementById('menuScreen').classList.add('hidden'); // 메뉴 화면 숨기기
+    document.getElementById('restaurantScreen').classList.remove('hidden'); // 음식점 화면 보이기
+    setLocation(); // 현재 위치에 기반하여 음식점 검색
 }
 
-// 주소를 사용하여 좌표를 가져오는 함수
+function setLocation() {
+    const locationInput = document.getElementById('locationInput').value.trim();
+    getCoordinates(locationInput || '성남시', currentCategory);
+}
+
 function getCoordinates(address, category) {
-    // kakao 객체가 정의되었는지 확인
     if (typeof kakao !== 'undefined') {
         new kakao.maps.services.Geocoder().addressSearch(address, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
@@ -25,21 +28,19 @@ function getCoordinates(address, category) {
             }
         });
     } else {
-        console.error("kakao 객체가 정의되지 않았습니다."); // 에러 메시지 출력
+        console.error("kakao 객체가 정의되지 않았습니다.");
     }
 }
 
-// 주어진 좌표에 지도를 표시하는 함수
 function displayMap(location, category) {
     if (!map) {
         map = new kakao.maps.Map(document.getElementById('map'), { center: location, level: 4 });
     } else {
-        map.setCenter(location); // 맵이 이미 있는 경우, 위치를 업데이트
+        map.setCenter(location);
     }
     searchPlaces(location, category);
 }
 
-// 특정 카테고리의 장소를 검색하고 결과를 표시하는 함수
 function searchPlaces(location, category) {
     new kakao.maps.services.Places().keywordSearch(category, (data, status) => {
         const resultDiv = document.getElementById('results');
@@ -58,13 +59,11 @@ function searchPlaces(location, category) {
     }, { location, radius: 1000, category_group_code: 'FD6' });
 }
 
-// 모든 마커를 제거하는 함수
 function clearMarkers() {
     markers.forEach(marker => marker.setMap(null));
     markers = [];
 }
 
-// 음식점 정보 표시 함수 (버튼 클릭 시 호출)
 function showRestaurantInfo(placeName) {
     document.getElementById('restaurantScreen').classList.add('hidden');
     document.getElementById('infoScreen').classList.remove('hidden');
@@ -72,8 +71,13 @@ function showRestaurantInfo(placeName) {
     infoDiv.innerHTML = `<h2>${placeName}</h2><p>여기에 음식점에 대한 설명이 들어갑니다.</p>`;
 }
 
-// 뒤로가기 버튼 기능
 function goBack() {
     document.getElementById('restaurantScreen').classList.add('hidden');
     document.getElementById('menuScreen').classList.remove('hidden');
+    document.getElementById('infoScreen').classList.add('hidden'); // 정보 화면도 숨김
 }
+
+function getNewRecommendations() {
+    // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직
+}
+ㅍ
