@@ -18,8 +18,27 @@
             background-color: #f9f9f9;
         }
 
+        /* 상단 및 하단 텍스트 스타일 */
+        .top-left-text, .bottom-right-text {
+            color: #555; /* 짙은 회색 */
+            position: absolute;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .top-left-text {
+            top: 10px;
+            left: 10px;
+        }
+
+        .bottom-right-text {
+            bottom: 10px;
+            right: 10px;
+            text-align: right;
+        }
+
         h1 {
-            font-size: 2.5em;
+            font-size: 3em; /* 제목 크기 증가 */
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
@@ -154,6 +173,10 @@
     </style>
 </head>
 <body>
+    <div class="top-left-text">
+        가천대학교 AI 중심세상 팀 프로젝트 결과물 (김나연, 김현아, 송시은, 최윤희)
+    </div>
+
     <h1>저녁 메뉴 추천</h1>
 
     <div class="input-group">
@@ -176,6 +199,10 @@
             </div>
             <button class="refresh-button" onclick="refreshRestaurants()"></button>
         </div>
+    </div>
+
+    <div class="bottom-right-text">
+        해당 홈페이지는 ChatGPT, kakao developer를 활용해 만들었습니다.
     </div>
 
     <script>
@@ -238,7 +265,6 @@
             var warningMessage = document.getElementById('warning-message');
             var refreshButton = document.querySelector('.refresh-button');
             
-            // 기존 음식점 리스트만 제거하고, 경고 메시지와 재추천 버튼은 유지
             restaurantList.querySelectorAll('.restaurant-item').forEach(item => item.remove());
             warningMessage.style.display = 'none';
 
