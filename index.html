@@ -262,18 +262,23 @@
                 location: currentCoords,
                 radius: 1000 // 1KM 반경
             };
-            ps.keywordSearch(category + " 음식점", placesSearchCB, options);
+            ps.keywordSearch(category + " 음식점", function(data, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    allRestaurants = data;
+                    displayedRestaurants = [];
+                    removeMarkers();
+                    displayAllRestaurants();
+                    displayRandomRestaurants();
+                } else {
+                    alert("검색 결과가 없습니다.");
+                }
+            }, options);
         }
 
-        function placesSearchCB(data, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                allRestaurants = data;
-                displayedRestaurants = [];
-                removeMarkers();
-                displayRandomRestaurants();
-            } else {
-                alert("검색 결과가 없습니다.");
-            }
+        function displayAllRestaurants() {
+            allRestaurants.forEach(function(place) {
+                displayMarker(place);
+            });
         }
 
         function displayRandomRestaurants() {
@@ -290,7 +295,6 @@
                 warningMessage.style.display = 'block';
             } else {
                 randomRestaurants.forEach(function(place) {
-                    displayMarker(place);
                     displayRestaurant(place);
                     displayedRestaurants.push(place.id);
                 });
