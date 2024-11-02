@@ -59,7 +59,7 @@ body, input, button {
 input[type="text"] {
     padding: 10px; /* 내부 여백 조정 */
     margin: 10px 0; /* 상하 간격 조정 */
-    width: 80%;
+    width: 100%;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
