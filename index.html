@@ -5,8 +5,7 @@
     <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
-        /* 스타일 정의 */
-        
+        /* 전체 스타일 */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -24,6 +23,33 @@
             margin-bottom: 20px;
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .button:hover {
+            background: #e05252;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        }
+
         .input-group {
             display: flex;
             align-items: center;
@@ -36,20 +62,26 @@
             font-size: 1em;
             border: 1px solid #ccc;
             border-radius: 10px 0 0 10px;
+            outline: none;
+            box-sizing: border-box;
+            height: 100%;
         }
 
         .location-button {
             padding: 10px 15px;
             background: #F15F5F;
             color: white;
-            border: none;
+            border: 1px solid #F15F5F;
+            border-left: none; /* 경계 부분 제거 */
             border-radius: 0 10px 10px 0;
             cursor: pointer;
             font-size: 1em;
-            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-sizing: border-box;
+            height: 100%; /* 높이 맞추기 */
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -121,6 +153,13 @@
 <body>
     <h1>저녁 메뉴 추천</h1>
 
+    <div class="button-group">
+        <button class="button" onclick="searchPlaces('한식')">한식</button>
+        <button class="button" onclick="searchPlaces('중식')">중식</button>
+        <button class="button" onclick="searchPlaces('양식')">양식</button>
+        <button class="button" onclick="searchPlaces('일식')">일식</button>
+    </div>
+
     <div class="input-group">
         <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
         <button class="location-button" onclick="setLocation()"></button>
@@ -138,6 +177,7 @@
     </div>
 
     <script>
+        // JavaScript 기능 유지
         var map, ps, marker, markers = [];
         var lastRestaurants = []; // 마지막에 표시된 음식점
         var displayedRestaurants = []; // 이미 표시된 음식점 목록
