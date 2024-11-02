@@ -177,7 +177,90 @@
     </div>
 
     <script>
-        // JavaScript 내용은 그대로 유지합니다...
+        var map, ps, marker, markers = [];
+
+        function initMap() {
+            var mapContainer = document.getElementById('map');
+            var mapOption = { 
+                center: new kakao.maps.LatLng(37.5665, 126.9780),
+                level: 3
+            }; 
+            map = new kakao.maps.Map(mapContainer, mapOption);
+            ps = new kakao.maps.services.Places();
+        }
+
+        initMap();
+
+        function setLocation() {
+            var locationInput = document.getElementById('location-input').value;
+            
+            if (locationInput) {
+                var geocoder = new kakao.maps.services.Geocoder();
+                geocoder.addressSearch(locationInput, function(result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                        map.setCenter(coords);
+
+                        if (marker) marker.setMap(null);
+
+                        marker = new kakao.maps.Marker({ position: coords });
+                        marker.setMap(map);
+                    } else {
+                        alert("위치를 찾을 수 없습니다.");
+                    }
+                });
+            } else {
+                alert("위치를 입력해 주세요.");
+            }
+        }
+
+        function searchPlaces(category) {
+            var keyword = category + " 음식점";
+            ps.keywordSearch(keyword, placesSearchCB);
+        }
+
+        function placesSearchCB(data, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                removeMarkers();
+                var restaurantList = document.getElementById('restaurant-list');
+                restaurantList.innerHTML = '';
+
+                var randomRestaurants = data.sort(() => 0.5 - Math.random()).slice(0, 3);
+                randomRestaurants.forEach(function(place) {
+                    displayMarker(place);
+                    displayRestaurant(place);
+                });
+            } else {
+                alert("검색 결과가 없습니다.");
+            }
+        }
+
+        function displayMarker(place) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x)
+            });
+            markers.push(marker);
+        }
+
+        function displayRestaurant(place) {
+            var restaurantList = document.getElementById('restaurant-list');
+            var item = document.createElement('div');
+            item.className = 'restaurant-item';
+            item.textContent = place.place_name;
+            restaurantList.appendChild(item);
+        }
+
+        function removeMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
+
+        function refreshRestaurants() {
+            alert("재추천 기능은 아직 구현되지 않았습니다.");
+        }
     </script>
 </body>
 </html>
