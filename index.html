@@ -139,11 +139,16 @@
         }
 
         .warning-message {
-            color: red;
-            font-weight: bold;
             font-size: 0.8em;
             margin-bottom: 10px;
             display: none; /* 초기에는 보이지 않음 */
+            color: black;
+        }
+
+        .reset-link {
+            color: red;
+            text-decoration: underline;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -165,7 +170,9 @@
     <div class="map-container">
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
-            <div class="warning-message" id="warning-message">더 이상 새로운 음식점이 없습니다. 초기화 하시겠습니까?</div>
+            <div class="warning-message" id="warning-message">
+                더 이상 새로운 음식점이 없습니다. <span class="reset-link" onclick="resetRestaurants()">초기화</span> 하시겠습니까?
+            </div>
             <!-- 음식점 이름이 표시될 부분 -->
             <button class="refresh-button" onclick="refreshRestaurants()">⟳</button>
         </div>
@@ -330,6 +337,13 @@
             // 표시된 음식점 목록에 추가
             displayedRestaurants = displayedRestaurants.concat(newSelection);
             lastRestaurants = newSelection;
+        }
+
+        // 초기화 함수: displayedRestaurants 배열 초기화 및 무작위 세 개의 음식점 표시
+        function resetRestaurants() {
+            displayedRestaurants = []; // 표시된 목록 초기화
+            document.getElementById('warning-message').style.display = 'none'; // 경고 메시지 숨김
+            displayRandomRestaurants(allRestaurants); // 새로 무작위 세 개 표시
         }
     </script>
 </body>
