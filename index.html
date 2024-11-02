@@ -18,7 +18,7 @@
         }
 
         h1 {
-            font-size: 2em;
+            font-size: 2.5em;
             font-weight: bold;
             margin-bottom: 20px;
         }
@@ -31,16 +31,23 @@
 
         .button {
             padding: 10px 20px;
-            background-color: #7b5eb5;
+            background: linear-gradient(135deg, #009688, #00695c);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px; /* 둥근 모서리 */
             cursor: pointer;
             font-size: 1em;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .button:hover {
-            background-color: #6a4ea3;
+            background: linear-gradient(135deg, #00796b, #004d40);
+        }
+
+        .button:active {
+            transform: scale(0.95); /* 버튼이 눌렸을 때 약간 작아지는 효과 */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .input-group {
@@ -51,24 +58,31 @@
 
         .input-group input {
             padding: 10px;
-            width: 300px; /* 위치 입력 칸 넓힘 */
+            width: 300px;
             font-size: 1em;
             border: 1px solid #ccc;
-            border-radius: 5px 0 0 5px; /* 좌측 모서리만 둥글게 */
+            border-radius: 5px 0 0 5px;
         }
 
         .location-button {
-            padding: 10px 20px;
-            background-color: #7b5eb5;
+            padding: 10px 15px;
+            background: linear-gradient(135deg, #009688, #00695c);
             color: white;
             border: none;
-            border-radius: 0 5px 5px 0; /* 우측 모서리만 둥글게 */
+            border-radius: 0 30px 30px 0; /* 오른쪽 모서리만 둥글게 */
             cursor: pointer;
             font-size: 1em;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .location-button:hover {
-            background-color: #6a4ea3;
+            background: linear-gradient(135deg, #00796b, #004d40);
+        }
+
+        .location-button:active {
+            transform: scale(0.95); /* 눌렀을 때 모션 */
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         #map {
