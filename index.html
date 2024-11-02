@@ -100,6 +100,7 @@
         }
 
         .restaurant-list {
+            position: relative;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -118,6 +119,28 @@
             border-radius: 5px;
             text-align: center;
             font-weight: bold;
+        }
+
+        .refresh-button {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .refresh-button:hover {
+            background-color: #45A049;
+        }
+
+        .refresh-button:active {
+            background-color: #388E3C;
         }
     </style>
 </head>
@@ -140,11 +163,13 @@
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
             <!-- 음식점 이름이 표시될 부분 -->
+            <button class="refresh-button" onclick="refreshRestaurants()">재추천</button>
         </div>
     </div>
 
     <script>
         var map, ps, marker, markers = [];
+        var lastRestaurants = []; // 이전에 선택된 음식점 목록 저장
 
         // Kakao Map Initialization
         function initMap() {
@@ -215,54 +240,4 @@
 
         // 장소 검색 결과 콜백 함수
         function placesSearchCB(data, status, pagination) {
-            if (status === kakao.maps.services.Status.OK) {
-                for (var i = 0; i < data.length; i++) {
-                    displayMarker(data[i]);
-                }
-                displayRandomRestaurants(data);
-            } else {
-                alert("주변에 검색된 음식점이 없습니다.");
-            }
-        }
-
-        // 검색된 장소에 마커 표시 함수
-        function displayMarker(place) {
-            var placePosition = new kakao.maps.LatLng(place.y, place.x);
-            var marker = new kakao.maps.Marker({
-                position: placePosition
-            });
-            marker.setMap(map);
-            markers.push(marker);
-
-            // 마커 클릭 시 장소 이름 표시
-            kakao.maps.event.addListener(marker, 'click', function() {
-                alert(place.place_name);
-            });
-        }
-
-        // 기존 마커 제거 함수
-        function clearMarkers() {
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-            }
-            markers = [];
-        }
-
-        // 음식점 리스트에서 무작위로 세 개의 음식점을 선택해 표시하는 함수
-        function displayRandomRestaurants(data) {
-            var restaurantList = document.getElementById('restaurant-list');
-            restaurantList.innerHTML = ''; // 기존 리스트 초기화
-
-            // 무작위로 세 개의 음식점 선택
-            var randomRestaurants = data.sort(() => 0.5 - Math.random()).slice(0, 3);
-
-            randomRestaurants.forEach(function(place) {
-                var item = document.createElement('div');
-                item.className = 'restaurant-item';
-                item.textContent = place.place_name;
-                restaurantList.appendChild(item);
-            });
-        }
-    </script>
-</body>
-</html>
+            if
