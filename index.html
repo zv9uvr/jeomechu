@@ -6,6 +6,7 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         /* 전체 스타일 */
+        
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -177,7 +178,6 @@
     </div>
 
     <script>
-        // JavaScript 기능 유지
         var map, ps, marker, markers = [];
         var lastRestaurants = []; // 마지막에 표시된 음식점
         var displayedRestaurants = []; // 이미 표시된 음식점 목록
@@ -225,30 +225,45 @@
             }
         }
 
-        // 특정 음식점 이름으로 장소 검색 후 별점 표시
-        function fetchPlaceRating(query) {
-            fetch(`/search_place?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.place_id) {
-                        // 장소 ID로 별점 정보 요청
-                        return fetch(`/place_details?place_id=${data.place_id}`);
-                    } else {
-                        throw new Error("Place not found");
-                    }
-                })
-                .then(response => response.json())
-                .then(details => {
-                    document.getElementById('rating').innerText = `별점: ${details.rating}`;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('rating').innerText = "별점 정보를 찾을 수 없습니다.";
-                });
+        // 검색어로 장소 검색
+        function searchPlaces(category) {
+            var keyword = category + " 음식점"; // 예: "한식 음식점"
+            ps.keywordSearch(keyword, placesSearchCB);
         }
 
-        // 예시로 'query' 변수에 음식점 이름을 넣어서 호출
-        fetchPlaceRating('맛집 이름');
+        // 장소 검색 결과 콜백 함수
+        function placesSearchCB(data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 기존 마커 제거
+                removeMarkers();
+                for (var i = 0; i < data.length; i++) {
+                    displayMarker(data[i]);
+                }
+            } else {
+                alert("검색 결과가 없습니다.");
+            }
+        }
+
+        // 장소에 마커 표시
+        function displayMarker(place) {
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x) 
+            });
+            markers.push(marker);
+
+            kakao.maps.event.addListener(marker, 'click', function() {
+                alert(place.place_name + "을 선택하셨습니다.");
+            });
+        }
+
+        // 모든 마커 제거
+        function removeMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setMap(null);
+            }
+            markers = [];
+        }
     </script>
 </body>
 </html>
