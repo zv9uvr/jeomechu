@@ -47,7 +47,7 @@
             background: #F15F5F;
             color: white;
             border: 1px solid #F15F5F;
-            border-left: none; /* 경계 부분 제거 */
+            border-left: none;
             border-radius: 0 10px 10px 0;
             cursor: pointer;
             font-size: 1em;
@@ -55,7 +55,7 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            height: 100%; /* 높이 맞추기 */
+            height: 100%;
             box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s, box-shadow 0.2s;
         }
@@ -156,12 +156,6 @@
         .refresh-button:active {
             background-color: #388E3C;
         }
-
-        #rating-display {
-            font-size: 1.2em;
-            margin-top: 20px;
-            display: none; /* 처음에는 숨김 */
-        }
     </style>
 </head>
 <body>
@@ -186,13 +180,8 @@
         </div>
     </div>
 
-    <div id="rating-display">
-        <p id="rating">별점 정보를 로드 중...</p>
-    </div>
-
     <script>
         var map, ps, marker, markers = [];
-        var displayedRestaurants = []; // 이미 표시된 음식점 목록
 
         // Kakao Map Initialization
         function initMap() {
@@ -258,10 +247,6 @@
                 position: new kakao.maps.LatLng(place.y, place.x)
             });
             markers.push(marker);
-
-            kakao.maps.event.addListener(marker, 'click', function() {
-                fetchPlaceRating(place.place_name);
-            });
         }
 
         function displayRestaurant(place) {
@@ -269,9 +254,6 @@
             var item = document.createElement('div');
             item.className = 'restaurant-item';
             item.textContent = place.place_name;
-            item.onclick = function() {
-                fetchPlaceRating(place.place_name);
-            };
             restaurantList.appendChild(item);
         }
 
@@ -280,29 +262,6 @@
                 markers[i].setMap(null);
             }
             markers = [];
-        }
-
-        function fetchPlaceRating(query) {
-            document.getElementById('rating-display').style.display = 'block';
-            document.getElementById('rating').innerText = '별점 정보를 로드 중...';
-
-            fetch(`/search_place?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.place_id) {
-                        return fetch(`/place_details?place_id=${data.place_id}`);
-                    } else {
-                        throw new Error("Place not found");
-                    }
-                })
-                .then(response => response.json())
-                .then(details => {
-                    document.getElementById('rating').innerText = `별점: ${details.rating}`;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('rating').innerText = "별점 정보를 찾을 수 없습니다.";
-                });
         }
     </script>
 </body>
