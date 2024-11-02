@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천</title>
+    <title>한식 메뉴 추천 - 지도</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,41 +16,18 @@
             background-color: #f5f5f5;
         }
         h1 {
-            font-size: 3em;
+            font-size: 2.5em;
             margin-bottom: 20px;
         }
-        .button-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        #map {
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            border: 2px solid #7b4ac4;
+            border-radius: 10px;
         }
-        .button {
-            background-color: #7b4ac4;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-        .note {
-            color: gray;
-            font-size: 0.9em;
-        }
-        .submit-button {
+        .back-button {
+            margin-top: 20px;
             background-color: #7b4ac4;
             color: white;
             border: none;
@@ -60,23 +37,30 @@
             border-radius: 5px;
         }
     </style>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67"></script>
 </head>
 <body>
 
-    <h1>저녁 메뉴 추천</h1>
+    <h1>한식 메뉴 추천</h1>
+    <div id="map"></div>
+    <button class="back-button" onclick="history.back()">뒤로 가기</button>
 
-    <div class="button-container">
-        <button class="button">한식</button>
-        <button class="button">중식</button>
-        <button class="button">양식</button>
-        <button class="button">일식</button>
-    </div>
+    <script>
+        var mapContainer = document.getElementById('map');
+        var mapOption = {
+            center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 중심 좌표
+            level: 3 // 지도 확대 레벨
+        };
 
-    <div class="input-container">
-        <input type="text" placeholder="지역을 입력해주세요! 입력하지 않으면 사용자의 현재 위치를 중심으로 설정됩니다 :)" />
-        <span class="note">지역을 입력해주세요! 입력하지 않으면 청남사함을 중심으로 설정됩니다 ;)</span>
-        <button class="submit-button">위치 설정</button>
-    </div>
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 마커 추가 예시 (서울 시청 위치)
+        var markerPosition  = new kakao.maps.LatLng(37.5665, 126.9780); 
+        var marker = new kakao.maps.Marker({
+            position: markerPosition
+        });
+        marker.setMap(map);
+    </script>
 
 </body>
 </html>
