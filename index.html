@@ -149,6 +149,10 @@
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .refresh-button:before {
+            content: '⟳'; /* 화살표 돌아가는 기호 */
+        }
+
         .refresh-button:hover {
             background-color: #45A049;
         }
@@ -176,7 +180,7 @@
     <div class="map-container">
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
-            <button class="refresh-button" onclick="refreshRestaurants()">⟳</button>
+            <button class="refresh-button" onclick="refreshRestaurants()"></button>
         </div>
     </div>
 
@@ -262,6 +266,10 @@
                 markers[i].setMap(null);
             }
             markers = [];
+        }
+
+        function refreshRestaurants() {
+            alert("재추천 기능은 아직 구현되지 않았습니다.");
         }
     </script>
 </body>
