@@ -1,7 +1,6 @@
-// 전역 변수 선언
-let map; // Kakao 지도 객체
-let currentCategory; // 현재 선택된 카테고리
-let markers = []; // 음식점 마커를 담을 배열
+let markers = [];
+let currentCategory;
+let map; // 전역 변수로 map 선언
 
 window.onload = function() {
     // 지도의 중심좌표와 초기화 설정
@@ -11,7 +10,7 @@ window.onload = function() {
         level: 3
     };
 
-    map = new kakao.maps.Map(container, options); // 전역 변수로 map 초기화
+    map = new kakao.maps.Map(container, options); // 기존 선언된 map 변수를 사용
 };
 
 function showRestaurantScreen(category) {
@@ -21,11 +20,6 @@ function showRestaurantScreen(category) {
     setLocation(); // 현재 위치에 기반하여 음식점 검색
 }
 
-function setLocation() {
-    const locationInput = document.getElementById('locationInput').value.trim();
-    getCoordinates(locationInput || '성남시', currentCategory); // 기본값 설정
-}
-
 function goBack() {
     document.getElementById('restaurantScreen').classList.add('hidden');
     document.getElementById('menuScreen').classList.remove('hidden');
@@ -33,5 +27,6 @@ function goBack() {
 
 function getNewRecommendations() {
     // 이전 추천과 겹치지 않는 새로운 음식점 추천 로직
-    // 새로운 음식을 추천하는 로직 구현
 }
+
+// setLocation과 getCoordinates 함수를 추가하세요
