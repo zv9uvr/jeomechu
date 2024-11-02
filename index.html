@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>저녁 메뉴 추천</title>
+    <title>저녁 메뉴 추천1</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
         /* 전체 스타일 */
@@ -252,6 +252,7 @@
                     map: map,
                     position: new kakao.maps.LatLng(place.y, place.x)
                 });
+                marker.setMap(map);  // 지도에 마커 표시
                 markers.push({ marker, place });
             });
         }
