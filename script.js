@@ -1,6 +1,7 @@
-let markers = [];
-let currentCategory;
-let map; // 전역 변수로 map 선언
+// 전역 변수 선언
+let map; // Kakao 지도 객체
+let currentCategory; // 현재 선택된 카테고리
+let markers = []; // 음식점 마커를 담을 배열
 
 window.onload = function() {
     // 지도의 중심좌표와 초기화 설정
