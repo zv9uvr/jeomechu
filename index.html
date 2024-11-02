@@ -18,7 +18,6 @@
             background-color: #f9f9f9;
         }
 
-        /* 상단 및 하단 텍스트 스타일 */
         .top-left-text, .bottom-right-text {
             color: #555;
             position: absolute;
@@ -26,16 +25,8 @@
             font-weight: bold;
         }
 
-        .top-left-text {
-            top: 10px;
-            left: 10px;
-        }
-
-        .bottom-right-text {
-            bottom: 10px;
-            right: 10px;
-            text-align: right;
-        }
+        .top-left-text { top: 10px; left: 10px; }
+        .bottom-right-text { bottom: 10px; right: 10px; text-align: right; }
 
         h1 {
             font-size: 3em;
@@ -99,9 +90,7 @@
             transition: transform 0.2s;
         }
 
-        .button:hover {
-            background: #e05252;
-        }
+        .button:hover { background: #e05252; }
 
         .map-container {
             display: flex;
@@ -111,10 +100,7 @@
             margin-top: 20px;
         }
 
-        #map {
-            width: 600px;
-            height: 400px;
-        }
+        #map { width: 600px; height: 400px; }
 
         .restaurant-list {
             position: relative;
@@ -155,9 +141,7 @@
             transition: transform 0.2s;
         }
 
-        .restaurant-item:hover {
-            background-color: #e6a5a5;
-        }
+        .restaurant-item:hover { background-color: #e6a5a5; }
 
         .refresh-button {
             position: absolute;
@@ -172,9 +156,7 @@
             font-size: 1.2em;
         }
 
-        .refresh-button:before {
-            content: '⟳';
-        }
+        .refresh-button:before { content: '⟳'; }
     </style>
 </head>
 <body>
@@ -219,138 +201,111 @@
 
         function initMap() {
             var mapContainer = document.getElementById('map');
-            var mapOption = { 
+            map = new kakao.maps.Map(mapContainer, { 
                 center: new kakao.maps.LatLng(37.5665, 126.9780),
                 level: 3
-            }; 
-            map = new kakao.maps.Map(mapContainer, mapOption);
+            });
             ps = new kakao.maps.services.Places();
         }
 
-        initMap();
-
         function setLocation() {
-            var locationInput = document.getElementById('location-input').value;
+            const locationInput = document.getElementById('location-input').value;
+            if (!locationInput) return alert("위치를 입력해 주세요.");
             
-            if (locationInput) {
-                var geocoder = new kakao.maps.services.Geocoder();
-                geocoder.addressSearch(locationInput, function(result, status) {
-                    if (status === kakao.maps.services.Status.OK) {
-                        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                        currentCoords = coords;
-                        map.setCenter(coords);
-
-                        if (marker) marker.setMap(null);
-
-                        marker = new kakao.maps.Marker({ position: coords });
-                        marker.setMap(map);
-                    } else {
-                        alert("위치를 찾을 수 없습니다.");
-                    }
-                });
-            } else {
-                alert("위치를 입력해 주세요.");
-            }
+            new kakao.maps.services.Geocoder().addressSearch(locationInput, (result, status) => {
+                if (status === kakao.maps.services.Status.OK) {
+                    currentCoords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(currentCoords);
+                    if (marker) marker.setMap(null);
+                    marker = new kakao.maps.Marker({ position: currentCoords });
+                    marker.setMap(map);
+                } else {
+                    alert("위치를 찾을 수 없습니다.");
+                }
+            });
         }
 
         function searchPlaces(category) {
-            if (!currentCoords) {
-                alert("먼저 위치를 설정해 주세요.");
-                return;
-            }
+            if (!currentCoords) return alert("먼저 위치를 설정해 주세요.");
 
-            var options = {
-                location: currentCoords,
-                radius: 3000 // 반경 3KM로 설정
-            };
-            ps.keywordSearch(category + " 음식점", function(data, status) {
+            const options = { location: currentCoords, radius: 3000 };
+            ps.keywordSearch(`${category} 음식점`, (data, status) => {
                 if (status === kakao.maps.services.Status.OK && data.length > 0) {
                     allRestaurants = data;
                     displayedRestaurants = [];
-                    removeMarkers();
-                    displayAllRestaurants();
-                    displayRandomRestaurants();
+                    updateMarkersAndList();
                 } else {
                     alert("검색 결과가 없습니다.");
                 }
             }, options);
         }
 
-        function displayAllRestaurants() {
-            allRestaurants.forEach(function(place) {
-                displayMarker(place);
+        function updateMarkersAndList() {
+            clearMarkers();
+            displayAllMarkers();
+            displayRandomRestaurants();
+        }
+
+        function displayAllMarkers() {
+            allRestaurants.forEach(place => {
+                const marker = new kakao.maps.Marker({
+                    map: map,
+                    position: new kakao.maps.LatLng(place.y, place.x)
+                });
+                markers.push({ marker, place });
             });
         }
 
         function displayRandomRestaurants() {
-            var restaurantList = document.getElementById('restaurant-list');
+            const restaurantList = document.getElementById('restaurant-list');
             restaurantList.innerHTML = '';
-            var warningMessage = document.getElementById('warning-message');
-            warningMessage.style.display = 'none';
+            document.getElementById('warning-message').style.display = 'none';
 
-            var randomRestaurants = allRestaurants
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 3);
-
+            const randomRestaurants = allRestaurants.sort(() => 0.5 - Math.random()).slice(0, 3);
             if (randomRestaurants.length === 0) {
-                warningMessage.style.display = 'block';
+                document.getElementById('warning-message').style.display = 'block';
             } else {
-                randomRestaurants.forEach(function(place) {
-                    displayRestaurant(place);
-                    displayedRestaurants.push(place.id);
-                });
+                randomRestaurants.forEach(place => displayRestaurant(place));
             }
         }
 
-        function displayMarker(place) {
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(place.y, place.x)
-            });
-            markers.push({ marker: marker, place: place });
-        }
-
         function displayRestaurant(place) {
-            var restaurantList = document.getElementById('restaurant-list');
-            var item = document.createElement('div');
+            const restaurantList = document.getElementById('restaurant-list');
+            const item = document.createElement('div');
             item.className = 'restaurant-item';
             item.textContent = place.place_name;
-            item.onclick = function() { highlightRestaurant(place); };
+            item.onclick = () => highlightRestaurant(place);
             restaurantList.appendChild(item);
         }
 
         function highlightRestaurant(place) {
-            if (infoWindow) {
-                infoWindow.close();
-            }
-
+            if (infoWindow) infoWindow.close();
             infoWindow = new kakao.maps.InfoWindow({
                 content: `<div style="padding:5px; font-size:12px;">${place.place_name}</div>`,
                 removable: true
             });
-
+            const markerObj = markers.find(m => m.place.id === place.id);
+            if (markerObj) infoWindow.open(map, markerObj.marker);
             map.setCenter(new kakao.maps.LatLng(place.y, place.x));
-            var markerObj = markers.find(m => m.place.id === place.id);
-            if (markerObj) {
-                infoWindow.open(map, markerObj.marker);
-            }
         }
 
-        function removeMarkers() {
-            markers.forEach(markerObj => markerObj.marker.setMap(null));
+        function clearMarkers() {
+            markers.forEach(m => m.marker.setMap(null));
             markers = [];
         }
 
         function refreshRestaurants() {
-            removeMarkers();
+            clearMarkers();
             displayRandomRestaurants();
         }
 
         function resetRestaurants() {
             displayedRestaurants = [];
-            removeMarkers();
+            clearMarkers();
             displayRandomRestaurants();
         }
+
+        window.onload = initMap;
     </script>
 </body>
 </html>
