@@ -76,7 +76,7 @@ function searchPlaces(location) {
     fetch(`https://dapi.kakao.com/v2/local/search/keyword.json?category_group_code=${categoryGroupCode}&x=${lng}&y=${lat}&radius=1000&page=1&size=15`, {
         method: 'GET',
         headers: {
-            'Authorization': 'KakaoAK YOUR_API_KEY' // 'YOUR_API_KEY'에 본인의 API 키를 입력
+            'Authorization': 'KakaoAK bf82efef9d1689d7ae8db1f8a0b75887' // 'YOUR_API_KEY'에 본인의 API 키를 입력
         }
     })
     .then(response => {
