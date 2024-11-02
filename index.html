@@ -123,6 +123,16 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
         }
 
+        .restaurant-item {
+            padding: 10px;
+            background-color: #FFD8D8;
+            color: black;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
         .refresh-button {
             position: absolute;
             bottom: 10px;
@@ -148,6 +158,7 @@
         #rating-display {
             font-size: 1.2em;
             margin-top: 20px;
+            display: none; /* 처음에는 숨김 */
         }
     </style>
 </head>
@@ -234,10 +245,14 @@
         // 장소 검색 결과 콜백 함수
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
-                // 기존 마커 제거
+                // 기존 마커 제거 및 리스트 초기화
                 removeMarkers();
+                var restaurantList = document.getElementById('restaurant-list');
+                restaurantList.innerHTML = '';
+
                 for (var i = 0; i < data.length; i++) {
                     displayMarker(data[i]);
+                    displayRestaurant(data[i]);
                 }
             } else {
                 alert("검색 결과가 없습니다.");
@@ -253,8 +268,20 @@
             markers.push(marker);
 
             kakao.maps.event.addListener(marker, 'click', function() {
-                alert(place.place_name + "을 선택하셨습니다.");
+                fetchPlaceRating(place.place_name);
             });
+        }
+
+        // 음식점 리스트에 표시
+        function displayRestaurant(place) {
+            var restaurantList = document.getElementById('restaurant-list');
+            var item = document.createElement('div');
+            item.className = 'restaurant-item';
+            item.textContent = place.place_name;
+            item.onclick = function() {
+                fetchPlaceRating(place.place_name);
+            };
+            restaurantList.appendChild(item);
         }
 
         // 모든 마커 제거
@@ -263,6 +290,30 @@
                 markers[i].setMap(null);
             }
             markers = [];
+        }
+
+        // 별점 정보 가져오기 및 표시
+        function fetchPlaceRating(query) {
+            document.getElementById('rating-display').style.display = 'block';
+            document.getElementById('rating').innerText = '별점 정보를 로드 중...';
+
+            fetch(`/search_place?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.place_id) {
+                        return fetch(`/place_details?place_id=${data.place_id}`);
+                    } else {
+                        throw new Error("Place not found");
+                    }
+                })
+                .then(response => response.json())
+                .then(details => {
+                    document.getElementById('rating').innerText = `별점: ${details.rating}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('rating').innerText = "별점 정보를 찾을 수 없습니다.";
+                });
         }
     </script>
 </body>
