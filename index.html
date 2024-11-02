@@ -5,13 +5,15 @@
     <title>저녁 메뉴 추천</title>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=12423bc5626e8970d0e4d220b391bd67&libraries=services"></script>
     <style>
+        /* 전체 스타일 */
+        
         body {
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background-color: #f9f9f9;
         }
@@ -20,33 +22,7 @@
             font-size: 2.5em;
             font-weight: bold;
             margin-bottom: 20px;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .button {
-            padding: 10px 20px;
-            background: #F15F5F;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .button:hover {
-            background: #e05252;
-        }
-
-        .button:active {
-            transform: scale(0.95);
-            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
 
         .input-group {
@@ -61,6 +37,8 @@
             font-size: 1em;
             border: 1px solid #ccc;
             border-radius: 10px 0 0 10px;
+            outline: none;
+            box-sizing: border-box;
         }
 
         .location-button {
@@ -72,10 +50,10 @@
             cursor: pointer;
             font-size: 1em;
             box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .location-button:before {
@@ -83,18 +61,31 @@
             font-size: 1.2em;
         }
 
-        .location-button:hover {
-            background: #e05252;
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
         }
 
-        .location-button:active {
-            transform: scale(0.95);
-            box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.4), 0px 3px 6px rgba(0, 0, 0, 0.3);
+        .button {
+            padding: 10px 20px;
+            background: #F15F5F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.3), 0px 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .map-container {
             display: flex;
             gap: 20px;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
         }
 
         #map {
@@ -127,10 +118,6 @@
             overflow: hidden;
         }
 
-        .restaurant-item.expanded {
-            height: auto;
-        }
-
         .refresh-button {
             position: absolute;
             bottom: 10px;
@@ -145,12 +132,8 @@
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .refresh-button:hover {
-            background-color: #45A049;
-        }
-
-        .refresh-button:active {
-            background-color: #388E3C;
+        .refresh-button:before {
+            content: '⟳'; /* 화살표 돌아가는 기호 */
         }
 
         .warning-message {
@@ -166,16 +149,15 @@
             cursor: pointer;
             font-weight: bold;
         }
-
-        .menu-list {
-            font-size: 0.9em;
-            color: #555;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
     <h1>저녁 메뉴 추천</h1>
+
+    <div class="input-group">
+        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
+        <button class="location-button" onclick="setLocation()"></button>
+    </div>
 
     <div class="button-group">
         <button class="button" onclick="searchPlaces('한식')">한식</button>
@@ -184,18 +166,13 @@
         <button class="button" onclick="searchPlaces('일식')">일식</button>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="location-input" placeholder="지역을 입력해주세요!">
-        <button class="location-button" onclick="setLocation()"></button>
-    </div>
-
     <div class="map-container">
         <div id="map"></div>
         <div class="restaurant-list" id="restaurant-list">
             <div class="warning-message" id="warning-message">
                 더 이상 새로운 음식점이 없습니다. <span class="reset-link" onclick="resetRestaurants()">초기화</span> 하시겠습니까?
             </div>
-            <button class="refresh-button" onclick="refreshRestaurants()">⟳</button>
+            <button class="refresh-button" onclick="refreshRestaurants()"></button>
         </div>
     </div>
 
