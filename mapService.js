@@ -1,16 +1,5 @@
 let markers = [];
 let currentCategory;
-let map; // 전역 변수로 map 선언
-
-window.onload = function() {
-    const container = document.getElementById('map'); // 'map' id 확인
-    const options = {
-        center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 좌표 예시
-        level: 3
-    };
-
-    map = new kakao.maps.Map(container, options); // 기존 선언된 map 변수를 사용
-};
 
 function showRestaurantScreen(category) {
     currentCategory = category; // 선택한 카테고리 저장
